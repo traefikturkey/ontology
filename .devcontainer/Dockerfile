@@ -2,8 +2,11 @@ FROM alpine:3.17
 
 ARG USER=anvil
 ENV USER=${USER}
+ENV LANGUAGE=en_US.UTF-8
+ENV LANG=en_US.UTF-8
 ENV TZ=America/New_York
-WORKDIR /app/
+ENV APP=/app
+WORKDIR ${APP}/
 
 RUN apk --no-cache add \
   bash \
