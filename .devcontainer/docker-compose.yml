@@ -4,6 +4,9 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    image: traefikturkey/ontology
+    hostname: ontology
+    container_name: ontology
     stdin_open: true
     tty: true 
     secrets:

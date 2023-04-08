@@ -35,4 +35,6 @@ RUN \
 
 USER ${USER}:${USER}
 
+COPY zshrc /home/$USER/.zshrc
+
 #CMD ["/bin/zsh"]
