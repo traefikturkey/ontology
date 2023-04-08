@@ -14,6 +14,7 @@ RUN apk --no-cache add \
   ca-certificates \
   curl \
   git \
+  openssl \
   openssh-client \
   sudo \
   tzdata \
@@ -32,6 +33,14 @@ RUN \
   chown -R ${USER}:${USER} /home/${USER} && \
   chmod 700 /home/${USER}/.ssh && \
   ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone 
+
+# install kubectl
+RUN \
+  curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+  chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl 
+
+# install helm
+RUN VERIFY_CHECKSUM=false curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s
 
 USER ${USER}:${USER}
 

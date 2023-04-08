@@ -1,12 +1,12 @@
-#autoload -U compinit && compinit
+autoload -U compinit && compinit
 
 #PATH=$PATH:/usr/local/bin
 
-#alias kc='kubectl'
+alias kc='kubectl'
 alias l='ls --color -lha --group-directories-first'
 
-#source <(kubectl completion zsh )
-#source <(helm completion zsh)
+source <(kubectl completion zsh )
+source <(helm completion zsh)
 #complete -F __start_kubectl k
 
 # make autocompletion
@@ -14,7 +14,7 @@ alias l='ls --color -lha --group-directories-first'
 
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 
-plugins=(zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(kubectl zsh-syntax-highlighting zsh-autosuggestions)
 
 # https://stackoverflow.com/a/65045491
 _git_branch() {
