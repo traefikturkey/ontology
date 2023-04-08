@@ -12,6 +12,7 @@ RUN apk --no-cache add \
   curl \
   git \
   tzdata \
+  openssh-client \
   zsh \
   zsh-autosuggestions\
   zsh-syntax-highlighting && \
