@@ -32,7 +32,9 @@ RUN \
   ln -snf /run/secrets/user_ssh_key /home/${USER}/.ssh/id_ed25519 && \
   chown -R ${USER}:${USER} /home/${USER} && \
   chmod 700 /home/${USER}/.ssh && \
-  ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone 
+  ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
+
+COPY gitconfig /etc/gitconfig
 
 # install kubectl
 RUN \
