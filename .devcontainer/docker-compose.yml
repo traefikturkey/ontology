@@ -9,6 +9,8 @@ services:
     container_name: ontology
     stdin_open: true
     tty: true 
+    environment:
+      XTEST: ${XTEST}
     secrets:
       - user_ssh_key
     volumes:
