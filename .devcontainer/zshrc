@@ -26,7 +26,7 @@ _git_branch() {
   fi
 }
 setopt PROMPT_SUBST
-PS1='%F{green}%n@%M%f:%F{cyan}%~$(_git_branch)$ '
+PS1='%F{green}%M%f:%F{cyan}%~$(_git_branch)$ '
 
 if test -f "~/.kube/config"; then
   echo "Found existing cluster configuration..."

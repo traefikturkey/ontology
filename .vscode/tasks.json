@@ -5,7 +5,7 @@
   "tasks": [
     {
       "label": "zsh",
-      "type": "process",
+      "type": "shell",
       "command": "/bin/zsh",
       "isBackground": true, // removes the infinite spinner
       "problemMatcher": [],

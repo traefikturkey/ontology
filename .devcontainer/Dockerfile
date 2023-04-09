@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.3-labs 
 FROM alpine:3.17
 
 ARG USER=anvil
@@ -23,7 +24,14 @@ RUN apk --no-cache add \
   zsh-syntax-highlighting && \
   rm -rf /var/cache/apk/*
   
-# setup local timezone
+# install kubectl
+RUN \
+  curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+  chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl 
+
+# install helm
+RUN VERIFY_CHECKSUM=false curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s
+
 
 RUN \
   adduser --disabled-password --home /home/${USER} --shell /bin/zsh ${USER} && \
@@ -35,14 +43,6 @@ RUN \
   ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
 
 COPY gitconfig /etc/gitconfig
-
-# install kubectl
-RUN \
-  curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
-  chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl 
-
-# install helm
-RUN VERIFY_CHECKSUM=false curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s
 
 USER ${USER}:${USER}
 
