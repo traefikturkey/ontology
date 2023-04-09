@@ -32,11 +32,14 @@ RUN \
 # install helm
 RUN VERIFY_CHECKSUM=false curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s
 
+# install terraform
+# versioning info from
+# https://github.com/devops-infra/docker-terragrunt/blob/master/Dockerfile
 RUN \
   release=$( curl -LsS https://releases.hashicorp.com/terraform/ | grep -Eo '/[.0-9]+/' | grep -Eo '[.0-9]+' | sort -V | tail -1 ) && \
   curl -LsS https://releases.hashicorp.com/terraform/${release}/terraform_${release}_linux_amd64.zip -o terraform.zip && \
   unzip terraform.zip && rm terraform.zip && \
-  mv terraform /usr/bin/terraform 
+  mv terraform /usr/local/bin/terraform 
 
 RUN \
   adduser --disabled-password --home /home/${USER} --shell /bin/zsh ${USER} && \
@@ -57,10 +60,10 @@ USER ${USER}:${USER}
 
 COPY zshrc /home/$USER/.zshrc
 
+# install ansible
 RUN \
   curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-  python3 get-pip.py --user && \
-  rm get-pip.py && \
+  python3 get-pip.py --user rm get-pip.py && \
   python3 -m pip install --user ansible
   
 #CMD ["/bin/zsh"]
