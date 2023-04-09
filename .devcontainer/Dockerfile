@@ -9,14 +9,18 @@ ENV TZ=America/New_York
 ENV APP=/app
 
 RUN apk --no-cache add \
+  ansible \
   bash \
   bash-completion \
   ca-certificates \
   curl \
   git \
+  just \
+  make \
   openssl \
   openssh-client \
   python3 \
+  py3-pip \
   sudo \
   tzdata \
   zsh \
@@ -59,11 +63,5 @@ WORKDIR ${APP}/
 USER ${USER}:${USER}
 
 COPY zshrc /home/$USER/.zshrc
-
-# install ansible
-RUN \
-  curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-  python3 get-pip.py --user && rm get-pip.py && \
-  python3 -m pip install --user ansible
   
 #CMD ["/bin/zsh"]
