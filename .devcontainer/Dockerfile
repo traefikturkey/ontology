@@ -63,7 +63,7 @@ COPY zshrc /home/$USER/.zshrc
 # install ansible
 RUN \
   curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-  python3 get-pip.py --user rm get-pip.py && \
+  python3 get-pip.py --user && rm get-pip.py && \
   python3 -m pip install --user ansible
   
 #CMD ["/bin/zsh"]
