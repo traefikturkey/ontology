@@ -7,6 +7,7 @@ ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV TZ=America/New_York
 ENV APP=/app
+ARG DOTFILES_REPO
 
 RUN apk --no-cache add \
   ansible \
@@ -56,12 +57,30 @@ RUN \
   chown -R ${USER}:${USER} ${APP} && \
   ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
 
-COPY gitconfig /etc/gitconfig
-
 WORKDIR ${APP}/
+
+COPY --chmod=755 <<-"EOF" /usr/local/bin/docker-entrypoint.sh
+#!/bin/bash
+set -e
+if [ -v DOCKER_ENTRYPOINT_DEBUG ] && [ "$DOCKER_ENTRYPOINT_DEBUG" == 1 ]; then
+  set -x
+  set -o xtrace
+fi
+
+if [ ! -z "$DOTFILE_OVERRIDE_URL" ]; then
+  cd ~/.dotfiles/ && git remote set-url origin $DOTFILE_OVERRIDE_URL
+fi
+
+echo "Running: $@"
+exec $@
+EOF
 
 USER ${USER}:${USER}
 
-COPY zshrc /home/$USER/.zshrc
+RUN \
+  git clone ${DOTFILES_REPO} /home/${USER}/.dotfiles && \
+  ~/.dotfiles/install
   
-#CMD ["/bin/zsh"]
+# https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
+ENTRYPOINT [ "docker-entrypoint.sh" ]
+CMD [ "sleep", "infinity" ]

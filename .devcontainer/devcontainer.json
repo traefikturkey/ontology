@@ -5,6 +5,9 @@
 	"dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "workspaceFolder": "/app",
+
+	// https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
+	"overrideCommand": false, 
 	
 	// Configure tool-specific properties.
 	"customizations": {
@@ -15,7 +18,13 @@
 				}
 			},
 			"terminal.integrated.defaultProfile.linux": "zsh"
-    }
+	},
+	"vscode": {
+		"extensions": [
+			"jeff-hykin.better-dockerfile-syntax",
+			"ms-azuretools.vscode-docker"
+		]
+	}
 	}
 
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
