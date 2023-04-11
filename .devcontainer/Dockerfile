@@ -7,7 +7,6 @@ ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV TZ=America/New_York
 ENV APP=/app
-ARG DOTFILES_REPO
 
 RUN apk --no-cache add \
   ansible \
@@ -55,6 +54,7 @@ RUN \
   chmod 700 /home/${USER}/.ssh && \
   mkdir -p ${APP} && \
   chown -R ${USER}:${USER} ${APP} && \
+  echo "make -f ./.devcontainer/Makefile" > /home/${USER}/.zshenv && \
   ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
 
 WORKDIR ${APP}/
@@ -71,14 +71,17 @@ if [ ! -z "$DOTFILE_OVERRIDE_URL" ]; then
   cd ~/.dotfiles/ && git remote set-url origin $DOTFILE_OVERRIDE_URL
 fi
 
+sudo chown -R $USER:$USER $APP
+
 echo "Running: $@"
 exec $@
 EOF
 
 USER ${USER}:${USER}
 
+ARG DOTFILES_URL
 RUN \
-  git clone ${DOTFILES_REPO} /home/${USER}/.dotfiles && \
+  git clone ${DOTFILES_URL} /home/${USER}/.dotfiles && \
   ~/.dotfiles/install
   
 # https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead

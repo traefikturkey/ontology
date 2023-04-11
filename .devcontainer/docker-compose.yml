@@ -5,14 +5,14 @@ services:
       context: .
       dockerfile: Dockerfile
       args: 
-        - DOTFILES_REPO=${DOTFILES_REPO:-https://github.com/traefikturkey/dotfiles.git} 
+        - DOTFILES_URL=${DOTFILES_URL:-https://github.com/traefikturkey/dotfiles.git} 
     image: traefikturkey/ontology
     hostname: ontology
     container_name: ontology
     stdin_open: true
     tty: true 
     environment:
-      DOTFILE_OVERRIDE_URL: ${DOTFILE_OVERRIDE_URL}
+      DOTFILES_OVERRIDE_URL: ${DOTFILES_OVERRIDE_URL}
     secrets:
       - user_ssh_key
     volumes:
