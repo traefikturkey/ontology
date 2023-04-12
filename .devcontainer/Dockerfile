@@ -67,10 +67,12 @@ if [ -v DOCKER_ENTRYPOINT_DEBUG ] && [ "$DOCKER_ENTRYPOINT_DEBUG" == 1 ]; then
   set -o xtrace
 fi
 
+git clone ${DOTFILES_URL} ~/.dotfiles 
+~/.dotfiles/install
+
 if [ ! -z "$DOTFILES_OVERRIDE_URL" ]; then
   cd ~/.dotfiles/ && git remote set-url origin $DOTFILES_OVERRIDE_URL
 fi
-cd ~/.dotfiles/ && git pull --rebase --autostash
 
 sudo chown -R $USER:$USER $APP
 
@@ -79,11 +81,6 @@ exec $@
 EOF
 
 USER ${USER}:${USER}
-
-ARG DOTFILES_URL
-RUN \
-  git clone ${DOTFILES_URL} /home/${USER}/.dotfiles && \
-  ~/.dotfiles/install
   
 # https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
 ENTRYPOINT [ "docker-entrypoint.sh" ]
