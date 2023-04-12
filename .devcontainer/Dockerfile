@@ -70,6 +70,7 @@ fi
 if [ ! -z "$DOTFILE_OVERRIDE_URL" ]; then
   cd ~/.dotfiles/ && git remote set-url origin $DOTFILE_OVERRIDE_URL
 fi
+cd ~/.dotfiles/ && git pull --rebase --autostash
 
 sudo chown -R $USER:$USER $APP
 
