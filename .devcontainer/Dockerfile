@@ -58,8 +58,6 @@ RUN \
   chmod 700 /home/${USER}/.ssh && \
   mkdir -p ${APP} && \
   chown -R ${USER}:${USER} ${APP} && \
-  echo "make -f ./.devcontainer/Makefile" > /home/${USER}/.zshenv && \
-  echo "make -f ./.devcontainer/Makefile" > /etc/profile.d/devcontainer.sh && \
   ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
 
 WORKDIR ${APP}/

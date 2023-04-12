@@ -5,12 +5,10 @@ setup: .devcontainer/.env ${HOME}/.dotfiles
 	@echo > /dev/null
 
 ${HOME}/.dotfiles:
-	@git clone ${DOTFILES_URL} ~/.dotfiles
-	@if [ ! -z "$DOTFILES_OVERRIDE_URL" ]; then \
-		cd ~/.dotfiles/ && git remote set-url origin $DOTFILES_OVERRIDE_URL; \
-	fi
-	@rm ~/.gitconfig 
+	@git clone ${DOTFILES_URL} ~/.dotfiles --recurse-submodules
 	@~/.dotfiles/install
+	ln -s ~/.dotfiles .dotfiles
+	ln -s ~/ .home
 
 .devcontainer/.env:
 	@echo "$@ is being created..."

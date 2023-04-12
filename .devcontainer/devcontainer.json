@@ -30,10 +30,16 @@
 					"**/.dotnet": true,
 					"**/.zcompdump": true
 				},
-				"editor.tabSize": 2
+				"editor.tabSize": 2,
+				"terminal.integrated.profiles.linux": {
+					"zsh": {
+						"path": "/bin/zsh"
+					}
+				},
+				"terminal.integrated.defaultProfile.linux": "zsh"
 			}
 		}
-	}
+	},
 
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	//"image": "mcr.microsoft.com/devcontainers/base:alpine-3.17"
@@ -45,7 +51,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
+	"postCreateCommand": "make -f /app/.devcontainer/Makefile",
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"

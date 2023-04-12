@@ -6,7 +6,7 @@
     {
       "label": "shell",
       "type": "shell",
-      "command": "/bin/${env:TERM_SHELL}",
+      "command": "/bin/${env:TERM_SHELL} -l",
       "isBackground": true, // removes the infinite spinner
       "problemMatcher": [],
       "presentation": {
