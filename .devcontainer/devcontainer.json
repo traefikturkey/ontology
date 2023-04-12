@@ -8,18 +8,13 @@
 
 	// https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
 	"overrideCommand": false, 
+
+	//"postStartCommand": "",
 	
+	"postCreateCommand": "",
+
 	//Configure tool-specific properties.
 	"customizations": {
-		// "settings": { 
-		// 	"terminal.integrated.profiles.linux": {
-		// 		"zsh": {
-		// 			"path": "/bin/zsh"
-		// 		}
-		// 	},
-		// 	"terminal.integrated.defaultProfile.linux": "zsh"
-		// },
-
 		"vscode": {
 			"extensions": [
 				"jeff-hykin.better-dockerfile-syntax",
@@ -31,12 +26,15 @@
 					"**/.zcompdump": true
 				},
 				"editor.tabSize": 2,
-				"terminal.integrated.profiles.linux": {
-					"zsh": {
-						"path": "/bin/zsh"
-					}
-				},
-				"terminal.integrated.defaultProfile.linux": "zsh"
+				//make -f /app/.devcontainer/Makefile
+				"terminal.integrated.shell.*": ["${env:TERM_SHELL}"],
+				//"terminal.integrated.defaultProfile.linux": "",
+				// "terminal.integrated.profiles.linux": {
+				// 	"zsh": {
+				// 		"path": "/bin/zsh",
+				// 		"args": ["-l"]
+				// 	}
+				// }
 			}
 		}
 	},
@@ -49,9 +47,6 @@
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "make -f /app/.devcontainer/Makefile",
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"

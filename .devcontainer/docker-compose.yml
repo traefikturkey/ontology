@@ -13,12 +13,11 @@ services:
     tty: true 
     environment:
       DOTFILES_URL: ${DOTFILES_URL:-https://github.com/traefikturkey/dotfiles.git}
-      DOTFILES_OVERRIDE_URL: ${DOTFILES_OVERRIDE_URL}
       TERM_SHELL: ${TERM_SHELL:-zsh}
     secrets:
       - user_ssh_key
     volumes:
-      - ../:/app:cached 
+      - ../:/app 
 secrets:
   user_ssh_key:
     file: ~/.ssh/id_ed25519

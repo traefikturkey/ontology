@@ -1,15 +1,14 @@
 
 .PHONY: setup
 
-setup: .devcontainer/.env ${HOME}/.dotfiles
+setup: ${HOME}/.dotfiles ${APP}/.devcontainer/.env
 	@echo > /dev/null
 
 ${HOME}/.dotfiles:
-	@git clone ${DOTFILES_URL} ~/.dotfiles --recurse-submodules
-	@~/.dotfiles/install
-	ln -s ~/.dotfiles .dotfiles
-	ln -s ~/ .home
+	cp ${HOME}/.${TERM_SHELL}rc ${HOME}/.${TERM_SHELL}bak
+	git clone ${DOTFILES_URL} ${HOME}/.dotfiles 
+	~/.dotfiles/install
 
-.devcontainer/.env:
+${APP}/.devcontainer/.env:
 	@echo "$@ is being created..."
 	@touch $@
