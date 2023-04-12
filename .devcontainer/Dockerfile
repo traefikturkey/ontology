@@ -67,8 +67,8 @@ if [ -v DOCKER_ENTRYPOINT_DEBUG ] && [ "$DOCKER_ENTRYPOINT_DEBUG" == 1 ]; then
   set -o xtrace
 fi
 
-if [ ! -z "$DOTFILE_OVERRIDE_URL" ]; then
-  cd ~/.dotfiles/ && git remote set-url origin $DOTFILE_OVERRIDE_URL
+if [ ! -z "$DOTFILES_OVERRIDE_URL" ]; then
+  cd ~/.dotfiles/ && git remote set-url origin $DOTFILES_OVERRIDE_URL
 fi
 cd ~/.dotfiles/ && git pull --rebase --autostash
 
