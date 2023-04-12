@@ -34,11 +34,11 @@ RUN apk --no-cache add \
   
 # install kubectl
 RUN \
-  curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+  curl -LsO https://storage.googleapis.com/kubernetes-release/release/$(curl -LsS https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
   chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl 
 
 # install helm
-RUN VERIFY_CHECKSUM=false curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s
+RUN VERIFY_CHECKSUM=false curl -LsS https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s
 
 # install terraform
 # versioning info from
@@ -70,13 +70,6 @@ set -e
 if [ -v DOCKER_ENTRYPOINT_DEBUG ] && [ "$DOCKER_ENTRYPOINT_DEBUG" == 1 ]; then
   set -x
   set -o xtrace
-fi
-
-git clone ${DOTFILES_URL} ~/.dotfiles 
-~/.dotfiles/install
-
-if [ ! -z "$DOTFILES_OVERRIDE_URL" ]; then
-  cd ~/.dotfiles/ && git remote set-url origin $DOTFILES_OVERRIDE_URL
 fi
 
 sudo chown -R $USER:$USER $APP
