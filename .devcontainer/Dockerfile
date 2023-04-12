@@ -3,6 +3,10 @@ FROM alpine:3.17
 
 ARG USER=anvil
 ENV USER=${USER}
+
+ARG TERM_SHELL
+ENV TERM_SHELL=${TERM_SHELL}
+
 ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV TZ=America/New_York
@@ -46,7 +50,7 @@ RUN \
   mv terraform /usr/local/bin/terraform 
 
 RUN \
-  adduser --disabled-password --home /home/${USER} --shell /bin/zsh ${USER} && \
+  adduser --disabled-password --home /home/${USER} --shell /bin/${TERM_SHELL} ${USER} && \
   echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
   mkdir -p /home/${USER}/.ssh && \
   ln -snf /run/secrets/user_ssh_key /home/${USER}/.ssh/id_ed25519 && \
@@ -55,6 +59,7 @@ RUN \
   mkdir -p ${APP} && \
   chown -R ${USER}:${USER} ${APP} && \
   echo "make -f ./.devcontainer/Makefile" > /home/${USER}/.zshenv && \
+  echo "make -f ./.devcontainer/Makefile" > /etc/profile.d/devcontainer.sh && \
   ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
 
 WORKDIR ${APP}/

@@ -4,9 +4,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "zsh",
+      "label": "shell",
       "type": "shell",
-      "command": "/bin/zsh",
+      "command": "/bin/${env:TERM_SHELL}",
       "isBackground": true, // removes the infinite spinner
       "problemMatcher": [],
       "presentation": {

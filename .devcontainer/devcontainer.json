@@ -24,7 +24,14 @@
 			"extensions": [
 				"jeff-hykin.better-dockerfile-syntax",
 				"ms-azuretools.vscode-docker"
-			]
+			],
+			"settings": {
+				"files.exclude": {
+					"**/.dotnet": true,
+					"**/.zcompdump": true
+				},
+				"editor.tabSize": 2
+			}
 		}
 	}
 

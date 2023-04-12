@@ -4,6 +4,8 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+      args:
+        - TERM_SHELL=${TERM_SHELL:-zsh}
     image: traefikturkey/ontology
     hostname: ontology
     container_name: ontology
@@ -12,6 +14,7 @@ services:
     environment:
       DOTFILES_URL: ${DOTFILES_URL:-https://github.com/traefikturkey/dotfiles.git}
       DOTFILES_OVERRIDE_URL: ${DOTFILES_OVERRIDE_URL}
+      TERM_SHELL: ${TERM_SHELL:-zsh}
     secrets:
       - user_ssh_key
     volumes:
