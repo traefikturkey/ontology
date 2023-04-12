@@ -57,10 +57,9 @@ RUN \
   chown -R ${USER}:${USER} /home/${USER} && \
   chmod 700 /home/${USER}/.ssh && \
   mkdir -p ${APP} && \
-  echo "echo MONKEY" >> "/home/${USER}/.bash_profile" && \
+  echo "rm -f /home/${USER}/.bash_profile" >> "/home/${USER}/.bash_profile" && \
   echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.bash_profile" && \
   echo "exec ${TERM_SHELL} -l" >> "/home/${USER}/.bash_profile" && \
-  echo "echo TERM_SHELL" >> "/home/${USER}/.${TERM_SHELL}rc" && \
   echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.${TERM_SHELL}rc" && \
   echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" && \
   ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
