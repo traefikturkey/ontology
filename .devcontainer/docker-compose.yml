@@ -14,6 +14,7 @@ services:
     environment:
       DOTFILES_URL: ${DOTFILES_URL:-https://github.com/traefikturkey/dotfiles.git}
       TERM_SHELL: ${TERM_SHELL:-zsh}
+      TZ: ${TZ:-America/New_York}
     secrets:
       - user_ssh_key
     volumes:

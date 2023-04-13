@@ -9,7 +9,7 @@ ENV TERM_SHELL=${TERM_SHELL}
 
 ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
-ENV TZ=America/New_York
+
 ENV APP=/app
 
 RUN apk --no-cache add \
@@ -61,8 +61,7 @@ RUN \
   echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.bash_profile" && \
   echo "exec ${TERM_SHELL} -l" >> "/home/${USER}/.bash_profile" && \
   echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.${TERM_SHELL}rc" && \
-  echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" && \
-  ln -snf /etc/localtime /usr/share/zoneinfo/${TZ} && echo ${TZ} > /etc/timezone
+  echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" 
 
 WORKDIR ${APP}/
 
