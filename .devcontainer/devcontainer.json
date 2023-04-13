@@ -9,10 +9,6 @@
 	// https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
 	"overrideCommand": false, 
 
-	//"postStartCommand": "",
-	
-	"postCreateCommand": "",
-
 	//Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
@@ -26,15 +22,8 @@
 					"**/.zcompdump": true
 				},
 				"editor.tabSize": 2,
-				//make -f /app/.devcontainer/Makefile
 				"terminal.integrated.shell.*": ["${env:TERM_SHELL}"],
-				//"terminal.integrated.defaultProfile.linux": "",
-				// "terminal.integrated.profiles.linux": {
-				// 	"zsh": {
-				// 		"path": "/bin/zsh",
-				// 		"args": ["-l"]
-				// 	}
-				// }
+				"dev.containers.gitCredentialHelperConfigLocation": "system"
 			}
 		}
 	},

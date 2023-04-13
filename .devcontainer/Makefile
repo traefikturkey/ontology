@@ -5,7 +5,6 @@ setup: ${HOME}/.dotfiles ${APP}/.devcontainer/.env
 	@echo > /dev/null
 
 ${HOME}/.dotfiles:
-	cp ${HOME}/.${TERM_SHELL}rc ${HOME}/.${TERM_SHELL}bak
 	git clone ${DOTFILES_URL} ${HOME}/.dotfiles 
 	~/.dotfiles/install
 
