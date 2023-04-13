@@ -14,7 +14,11 @@
 		"vscode": {
 			"extensions": [
 				"jeff-hykin.better-dockerfile-syntax",
-				"ms-azuretools.vscode-docker"
+				"ms-azuretools.vscode-docker",
+				"ms-vsliveshare.vsliveshare",
+				"mikestead.dotenv",
+				"EditorConfig.EditorConfig",
+				"redhat.vscode-yaml"
 			],
 			"settings": {
 				"files.exclude": {
