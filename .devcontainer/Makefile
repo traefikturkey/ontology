@@ -1,6 +1,6 @@
 
 .PHONY: setup
-setup:${HOME}/.dotfiles/.git ${HOME}/.dotfiles_initialized ${APP}/.devcontainer/.env ${HISTFILE}
+setup:${HOME}/.dotfiles/.git ${HOME}/.dotfiles_initialized ${APP}/.devcontainer/.env ${HISTFILE} ${APP}/.dotfiles
 	@echo > /dev/null
 
 ${HOME}/.dotfiles/.git:
@@ -13,6 +13,9 @@ ${HOME}/.dotfiles_initialized:
 
 ${HISTFILE}:
 	touch $@
+
+${APP}/.dotfiles:
+	ln -snf ~/.dotfiles $@
 
 ${APP}/.devcontainer/.env:
 	@echo "$@ is being created..."
