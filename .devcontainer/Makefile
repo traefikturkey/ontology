@@ -1,6 +1,5 @@
 
 .PHONY: setup
-
 setup:${HOME}/.dotfiles/.git ${HOME}/.dotfiles_initialized ${APP}/.devcontainer/.env ${HISTFILE}
 	@echo > /dev/null
 
