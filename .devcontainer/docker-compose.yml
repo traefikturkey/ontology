@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
+        - USER=${USER:-anvil}
         - TERM_SHELL=${TERM_SHELL:-zsh}
     image: traefikturkey/ontology
     hostname: ontology

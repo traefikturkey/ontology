@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.3-labs 
 FROM alpine:3.17
 
-ARG USER=anvil
+ARG USER
 ENV USER=${USER}
 
 ARG TERM_SHELL
