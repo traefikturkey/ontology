@@ -19,6 +19,13 @@ services:
       - user_ssh_key
     volumes:
       - ../:/app 
+      - shell-history:/mnt/.devcontainer
+      - dotfiles:/home/${USER:-anvil}/.dotfiles
+
+volumes:
+  shell-history:
+  dotfiles:
+
 secrets:
   user_ssh_key:
     file: ~/.ssh/id_ed25519

@@ -52,17 +52,19 @@ RUN \
 RUN \
   adduser --disabled-password --home /home/${USER} --shell /bin/${TERM_SHELL} ${USER} && \
   echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
-  mkdir -p /home/${USER}/.ssh && \
+  mkdir -p /home/${USER}/.ssh && mkdir -p /home/${USER}/.dotfiles && \
   ln -snf /run/secrets/user_ssh_key /home/${USER}/.ssh/id_ed25519 && \
-  chown -R ${USER}:${USER} /home/${USER} && \
   chmod 700 /home/${USER}/.ssh && \
   mkdir -p ${APP} && \
+  mkdir -p /mnt/.devcontainer && chown -R ${USER}:${USER} /mnt/.devcontainer && \
   echo "rm -f /home/${USER}/.bash_profile" >> "/home/${USER}/.bash_profile" && \
   echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.bash_profile" && \
   echo "exec ${TERM_SHELL} -l" >> "/home/${USER}/.bash_profile" && \
   echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.${TERM_SHELL}rc" && \
-  echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" 
+  echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" && \
+  chown -R ${USER}:${USER} /home/${USER} 
 
+ENV HISTFILE=/mnt/.devcontainer/shell-history
 WORKDIR ${APP}/
 
 COPY --chmod=755 <<-"EOF" /usr/local/bin/docker-entrypoint.sh
