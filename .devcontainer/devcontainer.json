@@ -26,7 +26,8 @@
 					"**/.zcompdump": true
 				},
 				"editor.tabSize": 2,
-				"terminal.integrated.shell.*": ["${env:TERM_SHELL}"],
+				"terminal.integrated.shell.linux": "${env:TERM_SHELL}",
+				"terminal.integrated.shell.windows": "pwsh",
 				"dev.containers.copyGitConfig": false,
 				"dev.containers.gitCredentialHelperConfigLocation": "system"
 			}
