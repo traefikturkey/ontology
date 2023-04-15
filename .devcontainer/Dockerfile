@@ -14,6 +14,7 @@ ENV APP=/app
 
 RUN apk --no-cache add \
   ansible \
+  ansible-lint \
   bash \
   bash-completion \
   ca-certificates \
