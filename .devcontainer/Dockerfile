@@ -60,7 +60,6 @@ RUN \
   adduser --disabled-password --home /home/${USER} --shell /bin/${TERM_SHELL} ${USER} && \
   echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
   mkdir -p /home/${USER}/.ssh && mkdir -p /home/${USER}/.dotfiles && \
-  ln -snf /run/secrets/user_ssh_key /home/${USER}/.ssh/id_ed25519 && \
   chmod 700 /home/${USER}/.ssh && \
   mkdir -p ${APP} && \
   mkdir -p /mnt/.devcontainer && chown -R ${USER}:${USER} /mnt/.devcontainer && \
