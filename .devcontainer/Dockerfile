@@ -28,6 +28,9 @@ RUN apk --no-cache add \
   sudo \
   tzdata \
   zsh \
+  zsh-vcs \
+  zsh-completions \
+  zsh-shift-select \
   zsh-autosuggestions \
   zsh-syntax-highlighting && \
   rm -rf /var/cache/apk/*
