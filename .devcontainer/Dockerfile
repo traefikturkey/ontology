@@ -19,6 +19,7 @@ RUN apk --no-cache add \
   ca-certificates \
   curl \
   git \
+  gnupg \
   just \
   make \
   openssl \
@@ -48,6 +49,9 @@ RUN \
   curl -LsS https://releases.hashicorp.com/terraform/${release}/terraform_${release}_linux_amd64.zip -o terraform.zip && \
   unzip terraform.zip && rm terraform.zip && \
   mv terraform /usr/local/bin/terraform 
+
+# install doppler cli
+RUN curl -LsS --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sh
 
 RUN \
   adduser --disabled-password --home /home/${USER} --shell /bin/${TERM_SHELL} ${USER} && \
