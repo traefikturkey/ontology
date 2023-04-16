@@ -15,14 +15,30 @@ ENV APP=/app
 RUN apk --no-cache add \
   ansible \
   ansible-lint \
+  ansible-core-doc \
   bash \
+  bash-doc \
   bash-completion \
+  bash-completion-doc \
   ca-certificates \
   curl \
+  curl-doc \
+  curl-zsh-completion \
   git \
+  git-doc \
+  git-crypt \
+  git-crypt-doc \
+  github-cli \
+  github-cli-doc \
   gnupg \
+  helm-zsh-completion \
+  helm-bash-completion \
   just \
+  just-zsh-completion \
+  just-bash-completion \
   make \
+  make-doc \
+  mandoc man-pages mandoc-apropos less less-doc \
   openssl \
   openssh-client \
   python3 \
@@ -30,11 +46,13 @@ RUN apk --no-cache add \
   sudo \
   tzdata \
   zsh \
+  zsh-doc \
   zsh-vcs \
   zsh-completions \
   zsh-shift-select \
   zsh-autosuggestions \
-  zsh-syntax-highlighting && \
+  zsh-syntax-highlighting \
+  zsh-syntax-highlighting-doc && \
   rm -rf /var/cache/apk/*
   
 # install kubectl
