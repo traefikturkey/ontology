@@ -19,6 +19,7 @@ services:
       TZ: ${TZ:-America/New_York}
     volumes:
       - ../:/app 
+      - "~/.ssh:/mnt/.ssh"
       - shell-history:/mnt/.devcontainer
       - dotfiles:/home/${USER:-anvil}/.dotfiles
 

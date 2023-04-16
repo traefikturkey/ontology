@@ -25,8 +25,13 @@ ${HOME}/.dotfiles/.git: | ${HOME}/.ssh/id_ed25519
 ${HOME}/.ssh/id_ed25519:
 ifdef DOPPLER_TOKEN
 	doppler secrets get SSH_KEY_PRIV --plain > $@
+	touch ${HOME}/.ssh/doppler_used
 else ifdef SSH_KEY_PRIV
 	echo "${SSH_KEY_PRIV}" > $@
+	touch ${HOME}/.ssh/env_used
+else
+	cp /mnt/.ssh/id_ed25519 $@
+	touch ${HOME}/.ssh/mnt_used
 endif
 	chmod 600 $@
 
