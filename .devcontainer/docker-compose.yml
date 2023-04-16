@@ -14,19 +14,15 @@ services:
     tty: true 
     environment:
       DOTFILES_URL: ${DOTFILES_URL:-https://github.com/traefikturkey/dotfiles.git}
+      DOPPLER_TOKEN: ${DOPPLER_TOKEN}
       TERM_SHELL: ${TERM_SHELL:-zsh}
       TZ: ${TZ:-America/New_York}
-    secrets:
-      - user_ssh_key
     volumes:
       - ../:/app 
+      - ~/.ssh:/mnt/.ssh:ro
       - shell-history:/mnt/.devcontainer
       - dotfiles:/home/${USER:-anvil}/.dotfiles
 
 volumes:
   shell-history:
   dotfiles:
-
-secrets:
-  user_ssh_key:
-    file: ~/.ssh/id_ed25519

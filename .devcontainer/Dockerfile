@@ -15,13 +15,30 @@ ENV APP=/app
 RUN apk --no-cache add \
   ansible \
   ansible-lint \
+  ansible-core-doc \
   bash \
+  bash-doc \
   bash-completion \
+  bash-completion-doc \
   ca-certificates \
   curl \
+  curl-doc \
+  curl-zsh-completion \
   git \
+  git-doc \
+  git-crypt \
+  git-crypt-doc \
+  github-cli \
+  github-cli-doc \
+  gnupg \
+  helm-zsh-completion \
+  helm-bash-completion \
   just \
+  just-zsh-completion \
+  just-bash-completion \
   make \
+  make-doc \
+  mandoc man-pages mandoc-apropos less less-doc \
   openssl \
   openssh-client \
   python3 \
@@ -29,11 +46,13 @@ RUN apk --no-cache add \
   sudo \
   tzdata \
   zsh \
+  zsh-doc \
   zsh-vcs \
   zsh-completions \
   zsh-shift-select \
   zsh-autosuggestions \
-  zsh-syntax-highlighting && \
+  zsh-syntax-highlighting \
+  zsh-syntax-highlighting-doc && \
   rm -rf /var/cache/apk/*
   
 # install kubectl
@@ -53,11 +72,13 @@ RUN \
   unzip terraform.zip && rm terraform.zip && \
   mv terraform /usr/local/bin/terraform 
 
+# install doppler cli
+RUN curl -LsS --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sh
+
 RUN \
   adduser --disabled-password --home /home/${USER} --shell /bin/${TERM_SHELL} ${USER} && \
   echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
   mkdir -p /home/${USER}/.ssh && mkdir -p /home/${USER}/.dotfiles && \
-  ln -snf /run/secrets/user_ssh_key /home/${USER}/.ssh/id_ed25519 && \
   chmod 700 /home/${USER}/.ssh && \
   mkdir -p ${APP} && \
   mkdir -p /mnt/.devcontainer && chown -R ${USER}:${USER} /mnt/.devcontainer && \
