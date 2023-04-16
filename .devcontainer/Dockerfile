@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.3-labs 
 FROM alpine:3.17
 
 ARG USER
@@ -92,19 +91,7 @@ RUN \
 ENV HISTFILE=/mnt/.devcontainer/shell-history
 WORKDIR ${APP}/
 
-COPY --chmod=755 <<-"EOF" /usr/local/bin/docker-entrypoint.sh
-#!/bin/bash
-set -e
-if [ -v DOCKER_ENTRYPOINT_DEBUG ] && [ "$DOCKER_ENTRYPOINT_DEBUG" == 1 ]; then
-  set -x
-  set -o xtrace
-fi
-
-sudo chown -R $USER:$USER $APP
-
-echo "Running: $@"
-exec $@
-EOF
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 USER ${USER}:${USER}
   
