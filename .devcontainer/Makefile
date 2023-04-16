@@ -4,6 +4,8 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
+SSH_AGENT_AVAIL := $(shell ssh-add -l > /dev/null 2>&1 | wc -l)
+
 .PHONY: setup dotfiles
 .ONESHELL: ${HOME}/.dotfiles/.git ${HOME}/.dotfiles_initialized
 
@@ -18,22 +20,33 @@ ${HOME}/.dotfiles_initialized: | ${HOME}/.dotfiles/.git
 	~/.dotfiles/install
 	date > $@
 
-${HOME}/.dotfiles/.git: | ${HOME}/.ssh/id_ed25519
+${HOME}/.dotfiles/.git: | ${HOME}/.ssh/used
 	cd ${HOME}/.dotfiles/
 	git clone ${DOTFILES_URL} . --recurse-submodules
 
-${HOME}/.ssh/id_ed25519:
-ifdef DOPPLER_TOKEN
-	doppler secrets get SSH_KEY_PRIV --plain > $@
-	touch ${HOME}/.ssh/doppler_used
+${HOME}/.ssh/used:
+ifdef SSH_AGENT_AVAIL
+	echo ssh_agent > $@
+else ifneq (,$(wildcard /mnt/.ssh/id_ed25519))
+	cp /mnt/.ssh/id_ed25519 ${HOME}/.ssh/id_ed25519
+	chmod 600 ${HOME}/.ssh/id_ed25519
+	echo mnt-id_ed25519 > $@
+else ifneq (,$(wildcard /mnt/.ssh/id_rsa))
+	cp /mnt/.ssh/id_ed25519 ${HOME}/.ssh/id_rsa
+	chmod 600 ${HOME}/.ssh/id_rsa
+	echo mnt-id_rsa > $@
+else ifdef DOPPLER_TOKEN
+	doppler secrets get SSH_KEY_PRIV --plain > ${HOME}/.ssh/id_ed25519
+	chmod 600 ${HOME}/.ssh/id_ed25519
+	echo doppler > $@
 else ifdef SSH_KEY_PRIV
-	echo "${SSH_KEY_PRIV}" > $@
-	touch ${HOME}/.ssh/env_used
+	echo ${SSH_KEY_PRIV} > ${HOME}/.ssh/id_ed25519
+	chmod 600 ${HOME}/.ssh/id_ed25519
+	echo env > $@
 else
-	cp /mnt/.ssh/id_ed25519 $@
-	touch ${HOME}/.ssh/mnt_used
+	echo nothing_found > $@
 endif
-	chmod 600 $@
+	
 
 ${HOME}/.env: | ${APP}/.devcontainer/.env
 	@ln -snf ${APP}/.devcontainer/.env  $@
