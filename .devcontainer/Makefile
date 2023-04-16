@@ -25,7 +25,7 @@ ${HOME}/.dotfiles/.git: | ${HOME}/.ssh/used
 	git clone ${DOTFILES_URL} . --recurse-submodules
 
 ${HOME}/.ssh/used:
-ifdef SSH_AGENT_AVAIL
+ifeq ($(shell expr $(SSH_AGENT_AVAIL) \>= 1), 1) 
 	echo ssh_agent > $@
 else ifneq (,$(wildcard /mnt/.ssh/id_ed25519))
 	cp /mnt/.ssh/id_ed25519 ${HOME}/.ssh/id_ed25519
