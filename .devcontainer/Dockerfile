@@ -75,7 +75,7 @@ RUN \
 RUN curl -LsS --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sh
 
 RUN \
-  adduser --disabled-password --home /home/${USER} --shell /bin/${TERM_SHELL} ${USER} && \
+  adduser -D -s /bin/${TERM_SHELL} ${USER} && \
   echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
   mkdir -p /home/${USER}/.ssh && mkdir -p /home/${USER}/.dotfiles && \
   chmod 700 /home/${USER}/.ssh && \
