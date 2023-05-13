@@ -88,12 +88,12 @@ RUN \
   echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" && \
   chown -R ${USER}:${USER} /home/${USER} 
 
-ENV HISTFILE=/mnt/.devcontainer/shell-history
-WORKDIR ${APP}/
-
 COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 USER ${USER}:${USER}
+
+ENV HISTFILE=/mnt/.devcontainer/shell-history
+WORKDIR ${APP}/
   
 # https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
 ENTRYPOINT [ "docker-entrypoint.sh" ]

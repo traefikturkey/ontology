@@ -11,6 +11,7 @@ SSH_AGENT_AVAIL := $(shell ssh-add -l > /dev/null 2>&1 | wc -l)
 
 setup: dotfiles ${HISTFILE} 
 	@ln -snf ~/.dotfiles ${APP}/.dotfiles
+	@echo "Makefile Completed..."
 
 dotfiles: | ${HOME}/.dotfiles_initialized ${HOME}/.env
 
@@ -46,7 +47,6 @@ else ifdef SSH_KEY_PRIV
 else
 	echo nothing_found > $@
 endif
-	
 
 ${HOME}/.env: | ${APP}/.devcontainer/.env
 	@ln -snf ${APP}/.devcontainer/.env  $@
