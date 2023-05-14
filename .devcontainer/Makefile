@@ -1,54 +1,66 @@
 # include .env if present
-ifneq (,$(wildcard ./.env))
-    include .env
+MAKEFILE_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+ifneq (,$(wildcard $(MAKEFILE_DIR).env))
+    include $(MAKEFILE_DIR).env
     export
 endif
 
 SSH_AGENT_AVAIL := $(shell ssh-add -l > /dev/null 2>&1 | wc -l)
 
-.PHONY: setup dotfiles
-.ONESHELL: ${HOME}/.dotfiles/.git ${HOME}/.dotfiles_initialized
+ifdef ANSIBLE_PLAYBOOKS_URL
+	AUTOMATIONS := automations
+endif
 
-setup: dotfiles ${HISTFILE} 
-	@ln -snf ~/.dotfiles ${APP}/.dotfiles
+.PHONY: setup automations dotfiles
+.ONESHELL: setup ~/.dotfiles/.git 
+
+setup: begin ~/.env dotfiles $(AUTOMATIONS) 
 	@echo "Makefile Completed..."
 
-dotfiles: | ${HOME}/.dotfiles_initialized ${HOME}/.env
+begin:
+	@echo "Running $(MAKEFILE_DIR)Makefile..."
 
-${HOME}/.dotfiles_initialized: | ${HOME}/.dotfiles/.git
-	cd ${HOME}/.dotfiles/
-	git pull --rebase --autostash
+automations: | automations/.git
+	@echo "Pulling latest $@ changes..."
+	@cd $@ && git pull --quiet --rebase --autostash
+
+automations/.git: | ~/.ssh/id_ed25519
+	git clone $(ANSIBLE_PLAYBOOKS_URL) automations --recurse-submodules
+
+dotfiles: | ~/.dotfiles/.git
+	@echo "Pulling latest ~/.dotfiles changes..."
+	@cd ~/.dotfiles/ && git pull --quiet --rebase --autostash
+	@echo "Running ~/.dotfiles/install..."
 	~/.dotfiles/install
-	date > $@
+	@ln -snf ~/.dotfiles ${APP}/.dotfiles
 
-${HOME}/.dotfiles/.git: | ${HOME}/.ssh/id_ed25519
-	cd ${HOME}/.dotfiles/
-	git clone ${DOTFILES_URL} . --recurse-submodules
+~/.dotfiles/.git: | ~/.ssh/id_ed25519
+	git clone $(DOTFILES_URL) .dotfiles --recurse-submodules
 
-${HOME}/.ssh/id_ed25519:
+~/.ssh/id_ed25519:
 ifeq ($(shell expr $(SSH_AGENT_AVAIL) \>= 1), 1) 
-	echo ssh_agent > ${HOME}/.ssh/used
+	echo ssh_agent > ~/.ssh/used
 else ifneq (,$(wildcard /mnt/.ssh/id_ed25519))
 	cp /mnt/.ssh/id_ed25519 $@
 	chmod 600 $@
-	echo mnt-id_ed25519 > ${HOME}/.ssh/used
+	echo mnt-id_ed25519 > ~/.ssh/used
 else ifneq (,$(wildcard /mnt/.ssh/id_rsa))
-	cp /mnt/.ssh/id_ed25519 ${HOME}/.ssh/id_rsa
-	chmod 600 ${HOME}/.ssh/id_rsa
-	echo mnt-id_rsa > ${HOME}/.ssh/used
+	cp /mnt/.ssh/id_ed25519 ~/.ssh/id_rsa
+	chmod 600 ~/.ssh/id_rsa
+	echo mnt-id_rsa > ~/.ssh/used
 else ifdef DOPPLER_TOKEN
 	doppler secrets get SSH_KEY_PRIV --plain > $@
 	chmod 600 $@
-	echo doppler > ${HOME}/.ssh/used
+	echo doppler > ~/.ssh/used
 else ifdef SSH_KEY_PRIV
 	echo ${SSH_KEY_PRIV} > $@
 	chmod 600 $@
-	echo env > ${HOME}/.ssh/used
+	echo env > ~/.ssh/used
 else
 	echo nothing_found > $@
 endif
 
-${HOME}/.env: | ${APP}/.devcontainer/.env
+~/.env: | ${APP}/.devcontainer/.env
 	@ln -snf ${APP}/.devcontainer/.env  $@
 
 ${HISTFILE}:

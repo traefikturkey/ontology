@@ -81,11 +81,11 @@ RUN \
   chmod 700 /home/${USER}/.ssh && \
   mkdir -p ${APP} && \
   mkdir -p /mnt/.devcontainer && chown -R ${USER}:${USER} /mnt/.devcontainer && \
-  echo "rm -f /home/${USER}/.bash_profile" >> "/home/${USER}/.bash_profile" && \
-  echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.bash_profile" && \
-  echo "exec ${TERM_SHELL} -l" >> "/home/${USER}/.bash_profile" && \
-  echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.${TERM_SHELL}rc" && \
-  echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" && \
+  # echo "rm -f /home/${USER}/.bash_profile" >> "/home/${USER}/.bash_profile" && \
+  # echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.bash_profile" && \
+  # echo "exec ${TERM_SHELL} -l" >> "/home/${USER}/.bash_profile" && \
+  # echo "make -f ${APP}/.devcontainer/Makefile" >> "/home/${USER}/.${TERM_SHELL}rc" && \
+  # echo "source ~/.${TERM_SHELL}rc" >> "/home/${USER}/.${TERM_SHELL}rc" && \
   chown -R ${USER}:${USER} /home/${USER} 
 
 COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
@@ -93,7 +93,7 @@ COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 USER ${USER}:${USER}
 
 ENV HISTFILE=/mnt/.devcontainer/shell-history
-WORKDIR ${APP}/
+WORKDIR ${APP}
   
 # https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
 ENTRYPOINT [ "docker-entrypoint.sh" ]

@@ -8,6 +8,7 @@
 
 	// https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
 	"overrideCommand": false, 
+	"updateContentCommand": "make -f /app/.devcontainer/Makefile",
 
 	//Configure tool-specific properties.
 	"customizations": {
