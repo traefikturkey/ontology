@@ -27,10 +27,23 @@
 					"**/.zcompdump": true
 				},
 				"editor.tabSize": 2,
-				"terminal.integrated.shell.linux": "${env:TERM_SHELL}",
-				"terminal.integrated.shell.windows": "pwsh",
 				"dev.containers.copyGitConfig": false,
-				"dev.containers.gitCredentialHelperConfigLocation": "system"
+				"dev.containers.gitCredentialHelperConfigLocation": "system",
+				"terminal.integrated.profiles.linux": {
+					"bash": {
+						"path": "/bin/bash",
+						"icon": "terminal-bash",
+						"args": ["-l"]
+					},
+					"zsh": {
+						"path": "/bin/zsh",
+						"icon": "terminal-linux",
+						"args": ["-l"]
+					}
+				},
+				"terminal.integrated.defaultProfile.linux": "${env:TERM_SHELL}",
+				// "terminal.integrated.shell.linux": "${env:TERM_SHELL}",
+				// "terminal.integrated.shell.windows": "pwsh",
 			}
 		}
 	},
