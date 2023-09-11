@@ -52,6 +52,7 @@ else
 	cp /mnt/.ssh/* ~/.ssh/
 	-chmod 600 ~/.ssh/id_ed25519
 	-chmod 600 ~/.ssh/id_rsa
+	-chmod 644 ~/.ssh/*.pub
 	echo mnt-id > ~/.ssh/used
 endif
 
