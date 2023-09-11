@@ -40,14 +40,6 @@ dotfiles: | ~/.dotfiles/.git
 ~/.ssh/id_ed25519:
 ifeq ($(shell expr $(SSH_AGENT_AVAIL) \>= 1), 1) 
 	echo ssh_agent > ~/.ssh/used
-else ifneq (,$(wildcard /mnt/.ssh/id_ed25519))
-	cp /mnt/.ssh/id_ed25519 $@
-	chmod 600 $@
-	echo mnt-id_ed25519 > ~/.ssh/used
-else ifneq (,$(wildcard /mnt/.ssh/id_rsa))
-	cp /mnt/.ssh/id_ed25519 ~/.ssh/id_rsa
-	chmod 600 ~/.ssh/id_rsa
-	echo mnt-id_rsa > ~/.ssh/used
 else ifdef DOPPLER_TOKEN
 	doppler secrets get SSH_KEY_PRIV --plain > $@
 	chmod 600 $@
@@ -57,7 +49,10 @@ else ifdef SSH_KEY_PRIV
 	chmod 600 $@
 	echo env > ~/.ssh/used
 else
-	echo nothing_found > $@
+	cp /mnt/.ssh/* ~/.ssh/
+	-chmod 600 ~/.ssh/id_ed25519
+	-chmod 600 ~/.ssh/id_rsa
+	echo mnt-id > ~/.ssh/used
 endif
 
 ~/.env: | ${APP}/.devcontainer/.env
