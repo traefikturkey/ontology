@@ -50,8 +50,7 @@ else ifdef SSH_KEY_PRIV
 	echo env > ~/.ssh/used
 else 
 	rsync -av --exclude='/mnt/.ssh/known_hosts' /mnt/.ssh/* ~/.ssh/
-	-chmod 600 ~/.ssh/id_ed25519
-	-chmod 600 ~/.ssh/id_rsa
+	-chmod 600 ~/.ssh/*
 	-chmod 644 ~/.ssh/*.pub
 	echo mnt-id > ~/.ssh/used
 endif
