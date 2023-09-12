@@ -42,6 +42,7 @@ RUN apk --no-cache add \
   openssh-client \
   python3 \
   py3-pip \
+  rsync \
   sudo \
   tzdata \
   zsh \

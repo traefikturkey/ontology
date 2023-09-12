@@ -48,12 +48,11 @@ else ifdef SSH_KEY_PRIV
 	echo ${SSH_KEY_PRIV} > $@
 	chmod 600 $@
 	echo env > ~/.ssh/used
-else
-	cp /mnt/.ssh/* ~/.ssh/
+else 
+	rsync -av --exclude='/mnt/.ssh/known_hosts' /mnt/.ssh/* ~/.ssh/
 	-chmod 600 ~/.ssh/id_ed25519
 	-chmod 600 ~/.ssh/id_rsa
 	-chmod 644 ~/.ssh/*.pub
-	-rm ~/.ssh/known_hosts
 	echo mnt-id > ~/.ssh/used
 endif
 
