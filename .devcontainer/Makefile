@@ -53,6 +53,7 @@ else
 	-chmod 600 ~/.ssh/id_ed25519
 	-chmod 600 ~/.ssh/id_rsa
 	-chmod 644 ~/.ssh/*.pub
+	-rm ~/.ssh/known_hosts
 	echo mnt-id > ~/.ssh/used
 endif
 
