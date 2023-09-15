@@ -32,10 +32,9 @@ dotfiles: | ~/.dotfiles/.git
 	@cd ~/.dotfiles/ && git pull --quiet --rebase --autostash
 	@echo "Running ~/.dotfiles/install..."
 	~/.dotfiles/install
-	@ln -snf ~/.dotfiles ${APP}/.dotfiles
 
 ~/.dotfiles/.git: | ~/.ssh/id_ed25519
-	git clone $(DOTFILES_URL) .dotfiles --recurse-submodules
+	git clone ${DOTFILES_URL} .dotfiles --recurse-submodules
 
 ~/.ssh/id_ed25519:
 ifeq ($(shell expr $(SSH_AGENT_AVAIL) \>= 1), 1) 
