@@ -14,7 +14,7 @@ endif
 .PHONY: setup automations dotfiles
 .ONESHELL: setup ~/.dotfiles/.git 
 
-setup: begin ~/.env dotfiles $(AUTOMATIONS) 
+setup: begin ${APP}/.devcontainer/.env dotfiles $(AUTOMATIONS) 
 	@echo "Makefile Completed..."
 
 begin:
@@ -34,7 +34,7 @@ dotfiles: | ~/.dotfiles/.git
 	~/.dotfiles/install
 
 ~/.dotfiles/.git: | ~/.ssh/id_ed25519
-	git clone ${DOTFILES_URL} .dotfiles --recurse-submodules
+	git clone ${DOTFILES_URL} ~/.dotfiles --recurse-submodules
 
 ~/.ssh/id_ed25519:
 ifeq ($(shell expr $(SSH_AGENT_AVAIL) \>= 1), 1) 
@@ -53,9 +53,6 @@ else
 	-chmod 644 ~/.ssh/*.pub
 	echo mnt-id > ~/.ssh/used
 endif
-
-~/.env: | ${APP}/.devcontainer/.env
-	@ln -snf ${APP}/.devcontainer/.env  $@
 
 ${HISTFILE}:
 	touch $@

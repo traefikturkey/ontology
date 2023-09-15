@@ -20,9 +20,7 @@ services:
     volumes:
       - ../:/app 
       - ~/.ssh:/mnt/.ssh:ro
-      - shell-history:/mnt/.devcontainer
-      - dotfiles:/home/${USER:-anvil}/.dotfiles
+      - home:/home/${USER:-anvil}
 
 volumes:
-  shell-history:
-  dotfiles:
+  home:
