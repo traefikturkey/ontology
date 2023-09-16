@@ -26,7 +26,7 @@
 					"**/.dotnet": true,
 					"**/.zcompdump": true
 				},
-				"window.title": "Ontology",
+				"window.title": "ontology",
 				"editor.tabSize": 2,
 				"dev.containers.copyGitConfig": false,
 				"dev.containers.gitCredentialHelperConfigLocation": "system",
