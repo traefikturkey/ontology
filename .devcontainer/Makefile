@@ -14,7 +14,7 @@ endif
 .PHONY: setup automations dotfiles
 .ONESHELL: setup ~/.dotfiles/.git 
 
-setup: begin ${APP}/.devcontainer/.env dotfiles $(AUTOMATIONS) 
+setup: begin ${APP}/.devcontainer/.env dotfiles $(AUTOMATIONS) .home
 	@echo "Makefile Completed..."
 
 begin:
@@ -32,6 +32,9 @@ dotfiles: | ~/.dotfiles/.git
 	@cd ~/.dotfiles/ && git pull --quiet --rebase --autostash
 	@echo "Running ~/.dotfiles/install..."
 	~/.dotfiles/install
+
+.home:
+	ln -s ~/ .home
 
 ~/.dotfiles/.git: | ~/.ssh/id_ed25519
 	git clone ${DOTFILES_URL} ~/.dotfiles --recurse-submodules
