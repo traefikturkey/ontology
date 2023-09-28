@@ -38,6 +38,7 @@ RUN apk --no-cache add \
   make \
   make-doc \
   mandoc man-pages mandoc-apropos less less-doc \
+  nano \
   openssl \
   openssh-client \
   python3 \
