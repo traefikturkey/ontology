@@ -93,6 +93,7 @@ COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 USER ${USER}:${USER}
 
 ENV HISTFILE=~/.shell-history
+ENV ANSIBLE_HOST_KEY_CHECKING=False
 WORKDIR ${APP}
   
 # https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
