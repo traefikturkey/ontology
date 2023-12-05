@@ -1,14 +1,31 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
-	"name": "Ontology",
-	"dockerComposeFile": "docker-compose.yml",
-  "service": "devcontainer",
-  "workspaceFolder": "/app", 
-
-	// https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
-	"overrideCommand": false, 
-	"updateContentCommand": "make -f /app/.devcontainer/Makefile",
+	"name": "${localWorkspaceFolderBasename}",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": { 
+		"context": ".",
+		"dockerfile": "Dockerfile",
+		"args": {
+			"USER": "${localEnv:USERNAME}",
+			"PROJECT_NAME": "${localWorkspaceFolderBasename}",
+			"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+			"TZ": "${localEnv:TZ:America/New_York}",
+			"TERM_SHELL": "${localEnv:TERM_SHELL:zsh}"
+		}
+	},
+	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}" ],
+	"initializeCommand": "pwsh -File ${localWorkspaceFolder}/.devcontainer/setup-ssh-agent.ps1",
+	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
+	"containerEnv": {
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+	},
+	"mounts": [
+		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USERNAME},type=volume",
+    "source=${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+	],
 
 	//Configure tool-specific properties.
 	"customizations": {
@@ -26,10 +43,10 @@
 					"**/.dotnet": true,
 					"**/.zcompdump": true
 				},
-				"window.title": "ontology",
-				"editor.tabSize": 2,
 				"dev.containers.copyGitConfig": false,
 				"dev.containers.gitCredentialHelperConfigLocation": "system",
+				"editor.tabSize": 2,
+				"files.readonlyFromPermissions": true,
 				"terminal.integrated.profiles.linux": {
 					"bash": {
 						"path": "/bin/bash",
@@ -43,8 +60,9 @@
 					}
 				},
 				"terminal.integrated.defaultProfile.linux": "${env:TERM_SHELL}",
-				// "terminal.integrated.shell.linux": "${env:TERM_SHELL}",
-				// "terminal.integrated.shell.windows": "pwsh",
+				"terminal.integrated.tabs.description": "",
+				"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
+				"window.title": "${localWorkspaceFolderBasename}"
 			}
 		}
 	}

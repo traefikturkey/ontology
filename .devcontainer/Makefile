@@ -1,65 +1,84 @@
-# include .env if present
-MAKEFILE_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-ifneq (,$(wildcard $(MAKEFILE_DIR).env))
-    include $(MAKEFILE_DIR).env
-    export
-endif
+MAKEFILE_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
+PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
+DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
+ENV_FILE := $(realpath $(PARENT_DIR)/.env) 
+USER := $(or $(USER),$(shell whoami))
+DATE := $(shell TZ=America/Los_Angeles date '+%Y-%m-%d-%H.%M.%S')
+export GIT_USER := $(shell echo "$(GIT_USER)" | tr A-Z a-z)
 
-SSH_AGENT_AVAIL := $(shell ssh-add -l > /dev/null 2>&1 | wc -l)
+# include .env if present
+ifneq (,$(wildcard $(ENV_FILE)))
+	include $(ENV_FILE)
+	export
+endif
 
 ifdef ANSIBLE_PLAYBOOKS_URL
 	AUTOMATIONS := automations
 endif
 
-.PHONY: setup automations dotfiles
-.ONESHELL: setup ~/.dotfiles/.git 
+DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
-setup: begin ${APP}/.devcontainer/.env dotfiles $(AUTOMATIONS) .home
+.PHONY: dotfiles update-dotfiles echo ownership setup ssh
+echo:
+	@echo ENV_FILE: $(ENV_FILE)
+	@echo PARENT_DIR: $(PARENT_DIR)
+	@echo MAKEFILE_DIR: $(MAKEFILE_DIR)
+	@echo VSCODE_DIR: $(VSCODE_DIR)
+	@echo VSCODE_SETTINGS_FILE: $(VSCODE_SETTINGS_FILE)
+	@echo DOTFILES_URL: $(DOTFILES_URL)
+	@echo DOTBOT_LINK: $(DOTBOT_LINK)
+
+setup: ownership $(ENV_FILE) ssh $(DOTBOT_LINK) $(AUTOMATIONS)
+#@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
 	@echo "Makefile Completed..."
 
-begin:
-	@echo "Running $(MAKEFILE_DIR)Makefile..."
+ownership:	
+	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
 
-automations: | automations/.git
+$(ENV_FILE):
+	@echo "Creating empty $@ file..."
+	touch $@
+
+ssh:
+	@echo "Setting up ~/.ssh..."
+	@sudo chown -R $(USER):$(USER) ~/.ssh
+	@chmod 700 ~/.ssh
+	@chmod 600 ~/.ssh/*
+	@echo "Setting up ssh-agent..."
+	@ssh-add
+	@eval `ssh-agent`
+
+automations: 
 	@echo "Pulling latest $@ changes..."
 	@cd $@ && git pull --quiet --rebase --autostash
 
 automations/.git: | ~/.ssh/id_ed25519
 	git clone $(ANSIBLE_PLAYBOOKS_URL) automations --recurse-submodules
 
-dotfiles: | ~/.dotfiles/.git
+$(DOTBOT_LINK): dotfiles
+	@echo "Creating symlink to $(DOTBOT_LINK)..."
+	@ln -s ~/.dotfiles $(DOTBOT_LINK) 
+
+reload-dotfiles:
+	symlinks -v ~ | grep .dotfiles | awk '{print $$2}' | xargs rm 
+	rm -rf ~/.dotfiles
+	ssh-keygen -f ~/.ssh/known_hosts -R github.com
+	ssh-keyscan github.com >> ~/.ssh/known_hosts
+	ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+	make dotfiles
+
+dotfiles: ~/.dotfiles/.git
+	@echo "Preparing to load/update ~/.dotfiles from $(DOTFILES_URL)..."
+ifneq (,$(DOTFILES_URL))
 	@echo "Pulling latest ~/.dotfiles changes..."
 	@cd ~/.dotfiles/ && git pull --quiet --rebase --autostash
 	@echo "Running ~/.dotfiles/install..."
 	~/.dotfiles/install
-
-.home:
-	ln -s ~/ .home
-
-~/.dotfiles/.git: | ~/.ssh/id_ed25519
-	git clone ${DOTFILES_URL} ~/.dotfiles --recurse-submodules
-
-~/.ssh/id_ed25519:
-ifeq ($(shell expr $(SSH_AGENT_AVAIL) \>= 1), 1) 
-	echo ssh_agent > ~/.ssh/used
-else ifdef DOPPLER_TOKEN
-	doppler secrets get SSH_KEY_PRIV --plain > $@
-	chmod 600 $@
-	echo doppler > ~/.ssh/used
-else ifdef SSH_KEY_PRIV
-	echo ${SSH_KEY_PRIV} > $@
-	chmod 600 $@
-	echo env > ~/.ssh/used
-else 
-	rsync -av --exclude='/mnt/.ssh/known_hosts' /mnt/.ssh/* ~/.ssh/
-	-chmod 600 ~/.ssh/*
-	-chmod 644 ~/.ssh/*.pub
-	echo mnt-id > ~/.ssh/used
 endif
 
-${HISTFILE}:
-	touch $@
-
-${APP}/.devcontainer/.env:
-	@echo "$@ is being created..."
-	@touch $@
+~/.dotfiles/.git: 
+ifneq (,$(DOTFILES_URL))
+	git clone $(DOTFILES_URL) ~/.dotfiles --recurse-submodules
+else
+	@echo "DOTFILES_URL has not been set!"
+endif
