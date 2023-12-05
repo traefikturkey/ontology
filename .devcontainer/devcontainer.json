@@ -16,7 +16,7 @@
 	},
 	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
 	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}" ],
-	"initializeCommand": "pwsh -File ${localWorkspaceFolder}/.devcontainer/setup-ssh-agent.ps1",
+	"initializeCommand": "make initialize --ignore-errors -f .devcontainer/Makefile",
 	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
 	"containerEnv": {
 		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",

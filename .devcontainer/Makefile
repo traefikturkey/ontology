@@ -82,3 +82,24 @@ ifneq (,$(DOTFILES_URL))
 else
 	@echo "DOTFILES_URL has not been set!"
 endif
+
+ifeq ($(OS),Windows_NT)
+  INITIALIZERS=initialize-windows
+else
+  INITIALIZERS=initialize-linux
+endif
+
+ifneq (, $(shell which pwsh))
+	SHELL_COMMAND=pwsh
+else ifneq (, $(shell which powershell))
+	SHELL_COMMAND=powershell
+endif
+
+initialize: $(INITIALIZERS)
+
+initialize-windows:
+	@echo "Initializing Windows..."
+	$(SHELL_COMMAND) -File .devcontainer/setup-ssh-agent.ps1
+
+initialize-linux:
+	@echo "Initializing Linux..."
