@@ -16,3 +16,12 @@ choco pin add -n vscode
 choco install vscode-remote-development
 choco pin add -n vscode-remote-development
 ```
+
+## optional overrides in .devcontainer/.env file
+```
+# a git repo for playbooks
+ANSIBLE_PLAYBOOKS_URL=git@github.com:ilude/playbooks.git
+
+# a git repo for DotBot dotfiles
+DOTFILES_URL=git@github.com:ilude/dotfiles.git
+```
