@@ -1,3 +1,4 @@
+# copy this file to .playbook_repos and customize with your playbook repos
 repos:
   - url: https://github.com/example/repo1.git
     name: repo1_directory
