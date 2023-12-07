@@ -30,7 +30,8 @@ DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
 .PHONY: dotfiles update-dotfiles echo ownership setup ssh
 echo:
-	@echo ENV_FILE: $(ENV_FILE)
+	@echo DEVCONTAINER_ENV: $(DEVCONTAINER_ENV)
+	@echo PARENT_ENV: $(PARENT_ENV)
 	@echo PARENT_DIR: $(PARENT_DIR)
 	@echo MAKEFILE_DIR: $(MAKEFILE_DIR)
 	@echo VSCODE_DIR: $(VSCODE_DIR)
@@ -38,16 +39,12 @@ echo:
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
-setup: ownership $(ENV_FILE) ssh $(AUTOMATIONS) $(SETUP_SHELL) | $(DOTBOT_LINK)
+setup: ownership ssh $(AUTOMATIONS) $(SETUP_SHELL) | $(DOTBOT_LINK)
 #@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
 	@echo "Makefile Completed..."
 
 ownership:	
 	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
-
-$(ENV_FILE):
-	@echo "Creating empty $@ file..."
-	touch $@
 
 ssh:
 	@echo "Setting up ~/.ssh..."
@@ -109,7 +106,11 @@ else ifneq (, $(shell which powershell))
 	SHELL_COMMAND=powershell
 endif
 
-initialize: $(INITIALIZERS)
+initialize: $(INITIALIZERS) $(DEVCONTAINER_ENV)
+
+$(DEVCONTAINER_ENV):
+	@echo "Creating empty $@ file..."
+	touch $@
 
 initialize-windows:
 	@echo "Initializing Windows..."
