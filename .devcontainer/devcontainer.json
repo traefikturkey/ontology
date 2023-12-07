@@ -2,12 +2,15 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
 	"name": "${localWorkspaceFolderBasename}",
+	"containerEnv": {
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+	},
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"build": { 
 		"context": ".",
 		"dockerfile": "Dockerfile",
 		"args": {
-			"USER": "${localEnv:USERNAME}",
+			"USER": "${localEnv:USER}${localEnv:USERNAME}",
 			"PROJECT_NAME": "${localWorkspaceFolderBasename}",
 			"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
 			"TZ": "${localEnv:TZ:America/New_York}",
@@ -18,13 +21,10 @@
 	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}" ],
 	"initializeCommand": "make initialize --ignore-errors -f .devcontainer/Makefile",
 	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
-	"containerEnv": {
-		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
-	},
 	"mounts": [
-		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USERNAME},type=volume",
-    "source=${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USER}${localEnv:USERNAME},type=volume",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USER}${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
+		"source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=cached",
 	],
 
 	//Configure tool-specific properties.
@@ -59,7 +59,7 @@
 						"args": ["-l"]
 					}
 				},
-				"terminal.integrated.defaultProfile.linux": "${env:TERM_SHELL}",
+				"terminal.integrated.defaultProfile.linux": "${TERM_SHELL}",
 				"terminal.integrated.tabs.description": "",
 				"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
 				"window.title": "${localWorkspaceFolderBasename}"

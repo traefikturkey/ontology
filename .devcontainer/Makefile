@@ -3,8 +3,7 @@ PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
 DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
 ENV_FILE := $(realpath $(PARENT_DIR)/.env) 
 USER := $(or $(USER),$(shell whoami))
-DATE := $(shell TZ=America/Los_Angeles date '+%Y-%m-%d-%H.%M.%S')
-export GIT_USER := $(shell echo "$(GIT_USER)" | tr A-Z a-z)
+DATE := $(shell TZ=America/New_York date '+%Y-%m-%d-%H.%M.%S')
 
 # include .env if present
 ifneq (,$(wildcard $(ENV_FILE)))
