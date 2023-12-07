@@ -3,7 +3,7 @@
 {
 	"name": "${localWorkspaceFolderBasename}",
 	"containerEnv": {
-		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}"
 	},
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"build": { 

@@ -4,7 +4,6 @@ PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
 PARENT_ENV := $(realpath $(PARENT_DIR)/.env) 
 DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
 USER := $(or $(USER),$(shell whoami))
-DATE := $(shell TZ=America/New_York date '+%Y-%m-%d-%H.%M.%S')
 
 # include .devcontainer/.env if present
 ifneq (,$(wildcard $(DEVCONTAINER_ENV)))
@@ -39,7 +38,7 @@ echo:
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
-setup: ownership ssh $(AUTOMATIONS) $(SETUP_SHELL) | $(DOTBOT_LINK)
+setup: ownership ssh $(AUTOMATIONS) | $(DOTBOT_LINK)
 #@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
 	@echo "Makefile Completed..."
 
@@ -61,9 +60,6 @@ automations: automations/.git
 
 automations/.git:
 	git clone $(ANSIBLE_PLAYBOOKS_URL) automations --recurse-submodules
-
-setup_shell:
-#sudo chsh -s $(which $(TERM_SHELL)) $(USER)
 
 $(DOTBOT_LINK): dotfiles
 	@echo "Creating symlink to $@..."
