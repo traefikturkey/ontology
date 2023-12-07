@@ -27,7 +27,7 @@ endif
 
 DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
-.PHONY: dotfiles update-dotfiles echo ownership setup ssh
+.PHONY: ansible dotfiles update-dotfiles echo ownership setup ssh
 echo:
 	@echo DEVCONTAINER_ENV: $(DEVCONTAINER_ENV)
 	@echo PARENT_ENV: $(PARENT_ENV)
@@ -38,12 +38,13 @@ echo:
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
-setup: ownership ssh $(AUTOMATIONS) | $(DOTBOT_LINK)
-#@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
-	@echo "Makefile Completed..."
+ansible:
+	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/download_playbook_repos.yml
 
-ownership:	
+setup: ownership ssh ansible $(AUTOMATIONS) | $(DOTBOT_LINK)
+	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/download_playbook_repos.yml
 	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
+	@echo "Makefile Completed..."
 
 ssh:
 	@echo "Setting up ~/.ssh..."

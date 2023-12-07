@@ -1,0 +1,31 @@
+---
+- name: Clone Git Repos from .playbook_repos
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check if .playbook_repos file exists
+      stat:
+        path: "{{ playbook_dir }}/../.playbook_repos"
+      register: file_stat
+
+    - name: Clone Git Repos if file exists
+      block:
+        - name: Read repo data from .playbook_repos.yaml
+          include_vars:
+            file: "{{ playbook_dir }}/../.playbook_repos"
+            name: repo_data
+
+        - name: Clone Git Repositories
+          git:
+            repo: "{{ item.url }}"
+            dest: "{{ lookup('env', 'PWD') }}/automations/{{ item.name | default(item.url | regex_replace('.*/', '') | regex_replace('\\.git$', '')) }}"
+            update: yes
+          loop: "{{ repo_data.repos }}"
+      when: file_stat.stat.exists
+
+    - name: Clone ANSIBLE_PLAYBOOKS_URL Repository
+      git:
+        repo: "{{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') }}"
+        dest: "{{ lookup('env', 'PWD') }}/automations/{{ default( lookup('env', 'ANSIBLE_PLAYBOOKS_URL') | regex_replace('.*/', '') | regex_replace('\\.git$', '')) }}"
+        update: yes
+      when: lookup('env', 'ANSIBLE_PLAYBOOKS_URL') |length > 0 and not file_stat.stat.exists

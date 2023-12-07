@@ -1,0 +1,7 @@
+repos:
+  - url: https://github.com/example/repo1.git
+    name: repo1_directory
+  - url: https://github.com/example/repo2.git
+    # No 'name' specified, will use the default directory name (repo2)
+  - url: https://github.com/example/repo3.git
+    name: custom_repo3_directory
