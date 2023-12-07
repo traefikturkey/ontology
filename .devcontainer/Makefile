@@ -1,13 +1,20 @@
 MAKEFILE_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
+DEVCONTAINER_ENV := $(realpath $(MAKEFILE_DIR)/.env) 
 PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
+PARENT_ENV := $(realpath $(PARENT_DIR)/.env) 
 DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
-ENV_FILE := $(realpath $(PARENT_DIR)/.env) 
 USER := $(or $(USER),$(shell whoami))
 DATE := $(shell TZ=America/New_York date '+%Y-%m-%d-%H.%M.%S')
 
+# include .devcontainer/.env if present
+ifneq (,$(wildcard $(DEVCONTAINER_ENV)))
+	include $(DEVCONTAINER_ENV)
+	export
+endif
+
 # include .env if present
-ifneq (,$(wildcard $(ENV_FILE)))
-	include $(ENV_FILE)
+ifneq (,$(wildcard $(PARENT_ENV)))
+	include $(PARENT_ENV)
 	export
 endif
 
@@ -27,7 +34,7 @@ echo:
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
-setup: ownership $(ENV_FILE) ssh $(DOTBOT_LINK) $(AUTOMATIONS)
+setup: ownership $(ENV_FILE) ssh $(AUTOMATIONS) | $(DOTBOT_LINK)
 #@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
 	@echo "Makefile Completed..."
 
@@ -47,16 +54,17 @@ ssh:
 	@ssh-add
 	@eval `ssh-agent`
 
-automations: 
+automations: automations/.git
 	@echo "Pulling latest $@ changes..."
 	@cd $@ && git pull --quiet --rebase --autostash
 
-automations/.git: | ~/.ssh/id_ed25519
+automations/.git:
 	git clone $(ANSIBLE_PLAYBOOKS_URL) automations --recurse-submodules
 
 $(DOTBOT_LINK): dotfiles
-	@echo "Creating symlink to $(DOTBOT_LINK)..."
-	@ln -s ~/.dotfiles $(DOTBOT_LINK) 
+	@echo "Creating symlink to $@..."
+	@rm -f $@
+	@ln -s ~/.dotfiles $@ 
 
 reload-dotfiles:
 	symlinks -v ~ | grep .dotfiles | awk '{print $$2}' | xargs rm 
