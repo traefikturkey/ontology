@@ -1,0 +1,20 @@
+---
+- name: Create Symlink to ~/.dotfiles
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Clone Dotfiles Repository
+      git:
+        repo: "{{ lookup('env', 'DOTFILES_URL') }}"
+        dest: "{{ lookup('env', 'HOME') + '/.dotfiles' }}"
+        recursive: yes  # Recursively clone submodules
+        update: yes
+
+    - name: Execute ~/.dotfiles/install
+      command: "~/.dotfiles/install"
+
+    - name: Create Symlink
+      file:
+        src: "{{ lookup('env', 'HOME') + '/.dotfiles' }}"
+        dest: "{{ lookup('env', 'PWD') + '/.dotfiles' }}"
+        state: link

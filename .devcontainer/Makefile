@@ -17,14 +17,6 @@ ifneq (,$(wildcard $(PARENT_ENV)))
 	export
 endif
 
-ifdef ANSIBLE_PLAYBOOKS_URL
-	AUTOMATIONS := automations
-endif
-
-ifneq (bash,$(TERMSHELL))
-	SETUP_SHELL=setup_shell
-endif
-
 DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
 .PHONY: ansible dotfiles update-dotfiles echo ownership setup ssh
@@ -38,58 +30,18 @@ echo:
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
-ansible:
-	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/download_playbook_repos.yml
-
-setup: ownership ssh ansible $(AUTOMATIONS) | $(DOTBOT_LINK)
-	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/download_playbook_repos.yml
+setup: ssh dotfiles playbook-repos
 	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
 	@echo "Makefile Completed..."
 
 ssh:
-	@echo "Setting up ~/.ssh..."
-	@sudo chown -R $(USER):$(USER) ~/.ssh
-	@chmod 700 ~/.ssh
-	@chmod 600 ~/.ssh/*
-	@echo "Setting up ssh-agent..."
-	@ssh-add
-	@eval `ssh-agent`
+	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/ssh.yml
 
-automations: automations/.git
-	@echo "Pulling latest $@ changes..."
-	@cd $@ && git pull --quiet --rebase --autostash
+dotfiles:
+	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/clone_dotfiles.yml
 
-automations/.git:
-	git clone $(ANSIBLE_PLAYBOOKS_URL) automations --recurse-submodules
-
-$(DOTBOT_LINK): dotfiles
-	@echo "Creating symlink to $@..."
-	@rm -f $@
-	@ln -s ~/.dotfiles $@ 
-
-reload-dotfiles:
-	symlinks -v ~ | grep .dotfiles | awk '{print $$2}' | xargs rm 
-	rm -rf ~/.dotfiles
-	ssh-keygen -f ~/.ssh/known_hosts -R github.com
-	ssh-keyscan github.com >> ~/.ssh/known_hosts
-	ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-	make dotfiles
-
-dotfiles: ~/.dotfiles/.git
-	@echo "Preparing to load/update ~/.dotfiles from $(DOTFILES_URL)..."
-ifneq (,$(DOTFILES_URL))
-	@echo "Pulling latest ~/.dotfiles changes..."
-	@cd ~/.dotfiles/ && git pull --quiet --rebase --autostash
-	@echo "Running ~/.dotfiles/install..."
-	~/.dotfiles/install
-endif
-
-~/.dotfiles/.git: 
-ifneq (,$(DOTFILES_URL))
-	git clone $(DOTFILES_URL) ~/.dotfiles --recurse-submodules
-else
-	@echo "DOTFILES_URL has not been set!"
-endif
+playbook-repos:
+	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/clone_playbook_repos.yml
 
 ifeq ($(OS),Windows_NT)
   INITIALIZERS=initialize-windows
