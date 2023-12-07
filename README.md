@@ -4,24 +4,28 @@ A .devcontainer based environment for using terraform, ansible, kubectl and helm
 # prereqs
 ## windows
 ```
-# install chocolatey
-Set-ExecutionPolicy remotesigned -force  
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
-iex((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))  
-
-choco install -y docker-desktop
-choco pin add -n docker-desktop
-choco install -y vscode
-choco pin add -n vscode
-choco install vscode-remote-development
-choco pin add -n vscode-remote-development
+winget install -e --id GnuWin32.Make
+winget install -e --id Docker.DockerDesktop
+winget install -e --id Microsoft.VisualStudioCode
+code --install-extension ms-vscode-remote.remote-containers
+code --install-extension ms-vscode-remote.remote-ssh
+code --install-extension ms-vscode-remote.remote-wsl
 ```
 
 ## optional overrides in .devcontainer/.env file
 ```
-# a git repo for playbooks
-ANSIBLE_PLAYBOOKS_URL=git@github.com:ilude/playbooks.git
-
 # a git repo for DotBot dotfiles
 DOTFILES_URL=git@github.com:ilude/dotfiles.git
+```
+
+## optionally download playbook or other repos from .devcontainer/.playbook_repos
+```
+# copy this file to .playbook_repos and customize with your playbook repos
+repos:
+  - url: https://github.com/example/repo1.git
+    name: repo1_directory
+  - url: https://github.com/example/repo2.git
+    # No 'name' specified, will use the default directory name (repo2)
+  - url: https://github.com/example/repo3.git
+    name: custom_repo3_directory
 ```

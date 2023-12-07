@@ -17,7 +17,7 @@ ifneq (,$(wildcard $(PARENT_ENV)))
 	export
 endif
 
-DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
+export DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
 .PHONY: ansible dotfiles update-dotfiles echo ownership setup ssh
 echo:
