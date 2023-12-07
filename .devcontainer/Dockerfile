@@ -17,7 +17,7 @@ ENV PROJECT_NAME=${PROJECT_NAME}
 ENV HOST_PROJECT_PATH=${HOST_PROJECT_PATH}
 ENV TZ=${TZ}
 
-ARG TERM_SHELL=zsh
+ARG TERM_SHELL=bash
 ENV TERM_SHELL=${TERM_SHELL}
 
 ENV LANGUAGE=en_US.UTF-8
@@ -72,6 +72,7 @@ RUN apk --no-cache add \
   python3-dev \
   ripgrep \
   rsync \
+  shadow \
   sshpass \
   sudo \
   tar \

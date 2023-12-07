@@ -22,6 +22,10 @@ ifdef ANSIBLE_PLAYBOOKS_URL
 	AUTOMATIONS := automations
 endif
 
+ifneq (bash,$(TERMSHELL))
+	SETUP_SHELL=setup_shell
+endif
+
 DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
 .PHONY: dotfiles update-dotfiles echo ownership setup ssh
@@ -34,7 +38,7 @@ echo:
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
-setup: ownership $(ENV_FILE) ssh $(AUTOMATIONS) | $(DOTBOT_LINK)
+setup: ownership $(ENV_FILE) ssh $(AUTOMATIONS) $(SETUP_SHELL) | $(DOTBOT_LINK)
 #@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
 	@echo "Makefile Completed..."
 
@@ -60,6 +64,9 @@ automations: automations/.git
 
 automations/.git:
 	git clone $(ANSIBLE_PLAYBOOKS_URL) automations --recurse-submodules
+
+setup_shell:
+#sudo chsh -s $(which $(TERM_SHELL)) $(USER)
 
 $(DOTBOT_LINK): dotfiles
 	@echo "Creating symlink to $@..."

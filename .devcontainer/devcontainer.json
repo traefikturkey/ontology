@@ -14,11 +14,11 @@
 			"PROJECT_NAME": "${localWorkspaceFolderBasename}",
 			"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
 			"TZ": "${localEnv:TZ:America/New_York}",
-			"TERM_SHELL": "${localEnv:TERM_SHELL:zsh}"
+			"TERM_SHELL": "${localEnv:TERM_SHELL:bash}"
 		}
 	},
 	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
-	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}" ],
+	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}","--env-file",".devcontainer/.env" ],
 	"initializeCommand": "make initialize --ignore-errors -f .devcontainer/Makefile",
 	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
 	"mounts": [
@@ -59,7 +59,6 @@
 						"args": ["-l"]
 					}
 				},
-				"terminal.integrated.defaultProfile.linux": "${TERM_SHELL}",
 				"terminal.integrated.tabs.description": "",
 				"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
 				"window.title": "${localWorkspaceFolderBasename}"
