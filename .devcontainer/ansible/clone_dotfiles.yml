@@ -13,6 +13,17 @@
     - name: Execute ~/.dotfiles/install
       command: "~/.dotfiles/install"
 
+    - name: Check if .dotfiles symlink exists
+      stat:
+        path: "{{ lookup('env', 'PWD') + '/.dotfiles' }}"
+      register: dotfiles_symlink
+
+    - name: Delete .dotfiles symlink
+      file:
+        path: "{{ lookup('env', 'PWD') + '/.dotfiles' }}"
+        state: absent
+      when: dotfiles_symlink.stat.islnk | default(false)
+
     - name: Create Symlink
       file:
         src: "{{ lookup('env', 'HOME') + '/.dotfiles' }}"
