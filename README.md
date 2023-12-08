@@ -9,7 +9,6 @@ winget install -e --id Docker.DockerDesktop
 winget install -e --id Microsoft.VisualStudioCode
 code --install-extension ms-vscode-remote.remote-containers
 code --install-extension ms-vscode-remote.remote-ssh
-code --install-extension ms-vscode-remote.remote-wsl
 ```
 
 ## optional overrides in .devcontainer/.env file
