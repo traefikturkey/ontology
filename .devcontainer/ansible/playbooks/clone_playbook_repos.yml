@@ -12,7 +12,7 @@
       block:
         - name: Read repo data from .playbook_repos
           include_vars:
-            file: "{{ playbook_dir }}/../.playbook_repos"
+            file: "{{ playbook_dir }}/../../.playbook_repos"
             name: repo_data
 
         - name: Clone Git Repositories
