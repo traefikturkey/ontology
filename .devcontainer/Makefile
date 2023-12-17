@@ -21,14 +21,13 @@ endif
 
 export DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
-.PHONY: ansible dotfiles update-dotfiles echo ownership setup ssh
+.PHONY: echo setup
 echo:
 	@echo DEVCONTAINER_ENV: $(DEVCONTAINER_ENV)
 	@echo PARENT_ENV: $(PARENT_ENV)
 	@echo PARENT_DIR: $(PARENT_DIR)
 	@echo MAKEFILE_DIR: $(MAKEFILE_DIR)
-	@echo VSCODE_DIR: $(VSCODE_DIR)
-	@echo VSCODE_SETTINGS_FILE: $(VSCODE_SETTINGS_FILE)
+	@echo PLAYBOOKS: $(PLAYBOOKS)
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
