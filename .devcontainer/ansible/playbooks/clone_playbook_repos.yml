@@ -5,11 +5,8 @@
   tasks:
     - name: Check if .playbook_repos file exists
       stat:
-        path: "{{ playbook_dir }}/../.playbook_repos"
+        path: "{{ playbook_dir }}/../../.playbook_repos"
       register: file_stat
-
-    - debug:
-        var: file_stat
 
     - name: Clone Git Repos if file exists
       block:
