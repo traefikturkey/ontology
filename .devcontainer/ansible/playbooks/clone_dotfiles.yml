@@ -9,6 +9,7 @@
         dest: "{{ lookup('env', 'HOME') + '/.dotfiles' }}"
         recursive: yes  # Recursively clone submodules
         update: yes
+        accept_hostkey: yes
 
     - name: Execute ~/.dotfiles/install
       command: "~/.dotfiles/install"

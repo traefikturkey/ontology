@@ -20,6 +20,7 @@
             repo: "{{ item.url }}"
             dest: "{{ lookup('env', 'PWD') }}/automations/{{ item.name | default(item.url | regex_replace('.*/', '') | regex_replace('\\.git$', '')) }}"
             update: yes
+            accept_hostkey: yes
           loop: "{{ repo_data.repos }}"
       when: file_stat.stat.exists
 
@@ -28,4 +29,5 @@
         repo: "{{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') }}"
         dest: "{{ lookup('env', 'PWD') }}/automations/{{ default( lookup('env', 'ANSIBLE_PLAYBOOKS_URL') | regex_replace('.*/', '') | regex_replace('\\.git$', '')) }}"
         update: yes
+        accept_hostkey: yes
       when: lookup('env', 'ANSIBLE_PLAYBOOKS_URL') |length > 0 and not file_stat.stat.exists
