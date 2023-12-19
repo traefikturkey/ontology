@@ -11,16 +11,18 @@
         state: directory
         owner: "{{ lookup('env', 'USER') }}"
         group: "{{ lookup('env', 'USER') }}"
+        recurse: true 
         mode: '0700'
 
     - name: Set permissions on ~/.ssh files
       file:
         path: "{{ lookup('env', 'HOME') }}/.ssh/*"
-        state: touch
+        state: file
+        owner: "{{ lookup('env', 'USER') }}"
+        group: "{{ lookup('env', 'USER') }}"
         mode: '0600'
 
     - name: Set up and start ssh-agent
       shell: |
         ssh-add
         eval "$(ssh-agent)"
-
