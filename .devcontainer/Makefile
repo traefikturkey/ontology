@@ -61,3 +61,7 @@ initialize-windows:
 
 initialize-linux:
 	@echo "Initializing Linux..."
+
+echo-os: 
+	@echo "$(INITIALIZERS) + $(SHELL_COMMAND)"
+	@echo "Path: ${ENV_FILE_NAME}"
