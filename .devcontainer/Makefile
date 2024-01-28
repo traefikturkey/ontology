@@ -6,6 +6,7 @@ PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
 PARENT_ENV := $(realpath $(PARENT_DIR)/.env) 
 DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
 USER := $(or $(USER),$(shell whoami))
+ENV_FILE_NAME = $(MAKEFILE_DIR).env
 
 # include .devcontainer/.env if present
 ifneq (,$(wildcard $(DEVCONTAINER_ENV)))
@@ -56,6 +57,7 @@ $(DEVCONTAINER_ENV):
 initialize-windows:
 	@echo "Initializing Windows..."
 	$(SHELL_COMMAND) -File .devcontainer/setup-ssh-agent.ps1
+	$(SHELL_COMMAND) -Command "if (-not (Test-Path $(ENV_FILE_NAME))) { New-Item -Path $(ENV_FILE_NAME)}"
 
 initialize-linux:
 	@echo "Initializing Linux..."
