@@ -38,14 +38,13 @@ setup:
 
 ifeq ($(OS),Windows_NT)
   INITIALIZERS=initialize-windows
+	ifneq (, $(shell where pwsh))
+		SHELL_COMMAND=pwsh
+	else ifneq (, $(shell where powershell))
+		SHELL_COMMAND=powershell
+	endif
 else
   INITIALIZERS=initialize-linux
-endif
-
-ifneq (, $(shell which pwsh))
-	SHELL_COMMAND=pwsh
-else ifneq (, $(shell which powershell))
-	SHELL_COMMAND=powershell
 endif
 
 initialize: $(INITIALIZERS) $(DEVCONTAINER_ENV)
