@@ -130,6 +130,10 @@ if [ -v DOCKER_ENTRYPOINT_DEBUG ] && [ "$DOCKER_ENTRYPOINT_DEBUG" == 1 ]; then
   set -o xtrace
 fi
 
+sudo chown -R ${USER}:${USER} ${HOME}/.ssh
+sudo chmod 700 ${HOME}/.ssh
+sudo chmod -R 600 ${HOME}/.ssh/*
+
 echo "Running: $@"
 exec $@
 EOF
