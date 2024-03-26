@@ -65,6 +65,8 @@ RUN apk --no-cache add \
   mandoc-apropos \
   man-pages \
   nano \
+  nmap \
+  nmap-scripts \
   openssl \
   openssh-client \
   py3-pip \
@@ -80,6 +82,7 @@ RUN apk --no-cache add \
   tzdata \
   util-linux \
   xz \
+  yamllint \
   yq \
   zsh \
   zsh-autosuggestions \
