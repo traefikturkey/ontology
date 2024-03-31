@@ -3,7 +3,11 @@
 {
 	"name": "${localWorkspaceFolderBasename}",
 	"containerEnv": {
-		"HOST_PROJECT_PATH": "${localWorkspaceFolder}"
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+		"PROJECT_NAME": "${localWorkspaceFolderBasename}",
+    "PROJECT_PATH": "${containerWorkspaceFolder}",
+		"ANSIBLE_LOCALHOST_WARNING": "False",
+		"ANSIBLE_INVENTORY_UNPARSED_WARNING": "False"
 	},
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"build": { 
@@ -17,10 +21,10 @@
 			"TERM_SHELL": "${localEnv:TERM_SHELL:bash}"
 		}
 	},
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}","--env-file",".devcontainer/.env" ],
 	"initializeCommand": "make initialize --ignore-errors -f .devcontainer/Makefile",
 	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}","--env-file",".devcontainer/.env" ],
 	"mounts": [
 		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USER}${localEnv:USERNAME},type=volume",
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USER}${localEnv:USERNAME}/.ssh,type=bind,consistency=cached"
