@@ -1,0 +1,3 @@
+- include_tasks: ssh.yml
+- include_tasks: dotfiles.yml
+- include_tasks: clone_playbook_repos.yml

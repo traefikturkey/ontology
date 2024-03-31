@@ -1,0 +1,13 @@
+- name: Clone/Update git repo {{ dotfiles_url }} to {{ dotfiles_path }}
+  git:
+    repo: "{{ dotfiles_url }}"
+    dest: "{{ dotfiles_path }}"
+    recursive: yes  # Recursively clone submodules
+    update: yes
+    force: yes
+    accept_hostkey: yes
+  ignore_errors: yes 
+
+- name: Execute {{ dotfiles_path }}/install
+  command: "{{ dotfiles_path }}/install"
+  ignore_errors: yes 

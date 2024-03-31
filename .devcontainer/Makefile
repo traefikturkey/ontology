@@ -1,7 +1,5 @@
 MAKEFILE_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 DEVCONTAINER_ENV := $(realpath $(MAKEFILE_DIR)/.env)
-INVENTORY_FILE := $(MAKEFILE_DIR)/ansible/inventory/inventory.yml 
-PLAYBOOKS := $(wildcard $(MAKEFILE_DIR)/ansible/playbooks/*.yml)
 PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
 PARENT_ENV := $(realpath $(PARENT_DIR)/.env) 
 DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
@@ -32,7 +30,7 @@ echo:
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
 setup: 
-	$(foreach PLAYBOOK, $(PLAYBOOKS), ansible-playbook -i $(INVENTORY_FILE)  $(PLAYBOOK);)
+	LC_ALL=C.UTF-8 ansible-playbook --inventory 127.0.0.1 --connection=local  .devcontainer/ansible/setup-container.yml
 	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
 	@echo "Makefile Completed..."
 

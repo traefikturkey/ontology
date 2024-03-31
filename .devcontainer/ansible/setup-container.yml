@@ -1,0 +1,7 @@
+---
+- name: Setup container
+  hosts: localhost
+  connection: local 
+  gather_facts: false
+  roles:
+    - role: setup-container

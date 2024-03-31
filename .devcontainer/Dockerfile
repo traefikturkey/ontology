@@ -120,7 +120,7 @@ RUN addgroup -g ${PGID} ${USER} && \
 		adduser -u ${PUID} -G ${USER} -s /bin/${TERM_SHELL} -D ${USER} && \
     echo ${USER} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER} && \
-    mkdir -p /workspace/${PROJECT_NAME} && \
+    mkdir -p /workspaces/${PROJECT_NAME} && \
 		ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
 ENV HOME=/home/${USER}
