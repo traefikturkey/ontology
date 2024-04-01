@@ -2,6 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
 	"name": "${localWorkspaceFolderBasename}",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"containerEnv": {
 		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
 		"PROJECT_NAME": "${localWorkspaceFolderBasename}",
@@ -22,14 +23,12 @@
 		}
 	},
 	"initializeCommand": "make initialize --ignore-errors -f .devcontainer/Makefile",
-	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile",
 	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}","--env-file",".devcontainer/.env" ],
 	"mounts": [
 		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USER}${localEnv:USERNAME},type=volume",
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USER}${localEnv:USERNAME}/.ssh,type=bind,consistency=cached"
 	],
-
 	//Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
@@ -39,7 +38,14 @@
 				"ms-vsliveshare.vsliveshare",
 				"mikestead.dotenv",
 				"EditorConfig.EditorConfig",
-				"redhat.vscode-yaml"
+				"redhat.vscode-yaml",
+				"streetsidesoftware.code-spell-checker",
+				"eamodio.gitlens",
+				"ms-vscode.makefile-tools",
+				"esbenp.prettier-vscode",
+				"redhat.ansible",
+				"dhoeric.ansible-vault",
+				"nhoizey.gremlins"
 			],
 			"settings": {
 				"files.exclude": {

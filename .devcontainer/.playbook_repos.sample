@@ -1,4 +1,5 @@
 # copy this file to .playbook_repos and customize with your playbook repos
+# for a single repo you can set ANSIBLE_PLAYBOOKS_URL in the .env file
 repos:
   - url: https://github.com/example/repo1.git
     name: repo1_directory
