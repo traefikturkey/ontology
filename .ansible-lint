@@ -1,0 +1,4 @@
+skip_list:
+  - "fqcn[action-core]"
+  - "latest[git]"
+  - "yaml[truthy]"

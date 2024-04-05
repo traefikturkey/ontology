@@ -48,14 +48,17 @@
 				"nhoizey.gremlins"
 			],
 			"settings": {
+				"ansible.ansibleLint.enabled": false,
+				"ansible.python.interpreterPath": "/usr/bin/python3",
+				"dev.containers.copyGitConfig": false,
+				"dev.containers.gitCredentialHelperConfigLocation": "system",
+				"editor.tabSize": 2,
 				"files.exclude": {
 					"**/.dotnet": true,
 					"**/.zcompdump": true
 				},
-				"dev.containers.copyGitConfig": false,
-				"dev.containers.gitCredentialHelperConfigLocation": "system",
-				"editor.tabSize": 2,
 				"files.readonlyFromPermissions": true,
+				"redhat.telemetry.enabled": false,
 				"terminal.integrated.profiles.linux": {
 					"bash": {
 						"path": "/bin/bash",
