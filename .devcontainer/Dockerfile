@@ -24,9 +24,6 @@ ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
 RUN apk --no-cache add \
-  ansible \
-  ansible-core-doc \
-  ansible-lint \
   bash \
   bash-completion \
   bash-completion-doc \
@@ -94,7 +91,7 @@ RUN apk --no-cache add \
   rm -rf /var/cache/apk/* && \
   # https://www.jeffgeerling.com/blog/2023/how-solve-error-externally-managed-environment-when-installing-pip3
   sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED  && \
-	pip3 install tldr thefuck dircolors
+	pip3 install tldr thefuck dircolors ansible ansible-lint ansible-core-doc
   
 # install kubectl
 RUN \
