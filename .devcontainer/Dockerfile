@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 ARG IMAGE_LANG=alpine 
-ARG IMAGE_VERSION=3.18
+ARG IMAGE_VERSION=3.19.1
 
 FROM ${IMAGE_LANG}:${IMAGE_VERSION}
 LABEL maintainer="Mike Glenn <mglenn@ilude.com>"
@@ -91,8 +91,12 @@ RUN apk --no-cache add \
   rm -rf /var/cache/apk/* && \
   # https://www.jeffgeerling.com/blog/2023/how-solve-error-externally-managed-environment-when-installing-pip3
   sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED  && \
-	pip3 install tldr thefuck dircolors ansible ansible-lint ansible-core-doc
+	pip3 install tldr dircolors
   
+# install ansible
+RUN \
+  pip3 install ansible ansible-lint
+
 # install kubectl
 RUN \
   curl -LsO https://storage.googleapis.com/kubernetes-release/release/$(curl -LsS https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
