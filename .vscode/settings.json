@@ -2,6 +2,8 @@
   "cSpell.words": [
     "automations",
     "azuretools",
+    "copytruncate",
+    "delaycompress",
     "devcontainer",
     "dhoeric",
     "dotfiles",
@@ -11,8 +13,14 @@
     "fqcn",
     "hostkey",
     "hykin",
+    "inotify",
+    "lineinfile",
     "mikestead",
+    "missingok",
     "nhoizey",
+    "overcommit",
+    "posix",
+    "somaxconn",
     "zcompdump"
   ]
 }
