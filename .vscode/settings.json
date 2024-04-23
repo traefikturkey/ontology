@@ -2,6 +2,7 @@
   "cSpell.words": [
     "automations",
     "azuretools",
+    "chdir",
     "copytruncate",
     "delaycompress",
     "devcontainer",
@@ -14,6 +15,7 @@
     "hostkey",
     "hykin",
     "inotify",
+    "islnk",
     "lineinfile",
     "mikestead",
     "missingok",
@@ -21,6 +23,12 @@
     "overcommit",
     "posix",
     "somaxconn",
+    "splitlines",
+    "traefikturkey",
     "zcompdump"
-  ]
+  ],
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/meta.json": "file:///workspaces/ontology/automations/playbooks/ansible/books/roles/setup-system/meta/main.yml"
+  },
+  "ansible.python.interpreterPath": "/usr/bin/python3"
 }
