@@ -7,6 +7,7 @@
     "delaycompress",
     "devcontainer",
     "dhoeric",
+    "Dotbot",
     "dotfiles",
     "eamodio",
     "esbenp",
@@ -26,9 +27,5 @@
     "splitlines",
     "traefikturkey",
     "zcompdump"
-  ],
-  "yaml.schemas": {
-    "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/meta.json": "file:///workspaces/ontology/automations/playbooks/ansible/books/roles/setup-system/meta/main.yml"
-  },
-  "ansible.python.interpreterPath": "/usr/bin/python3"
+  ]
 }
