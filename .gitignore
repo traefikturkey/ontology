@@ -1,4 +1,5 @@
 .env
+.ansible
 .dotfiles
 .playbook_repos
 automations

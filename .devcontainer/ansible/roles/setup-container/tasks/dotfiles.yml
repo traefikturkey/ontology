@@ -11,3 +11,4 @@
 - name: Execute {{ dotfiles_path }}/install
   command: "{{ dotfiles_path }}/install"
   ignore_errors: yes 
+  become: false
