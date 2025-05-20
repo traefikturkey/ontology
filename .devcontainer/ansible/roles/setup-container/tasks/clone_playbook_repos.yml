@@ -20,10 +20,14 @@
       loop: "{{ repo_data.repos }}"
 # end block
 
-- name: Clone ANSIBLE_PLAYBOOKS_URL Repository
+- name: "Clone {{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') }} Repository"
   git:
     repo: "{{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') }}"
     dest: "{{ lookup('env', 'PWD') }}/automations/{{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') | regex_replace('.*/', '') | regex_replace('\\.git$', '') }}"
     update: yes
     accept_hostkey: yes
+  register: repo_clone
   when: lookup('env', 'ANSIBLE_PLAYBOOKS_URL') |length > 0 and not file_stat.stat.exists
+  failed_when:
+    - repo_clone.failed
+    - not 'Local modifications exist in repository' in repo_clone.msg
