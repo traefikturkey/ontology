@@ -1,17 +1,14 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
 	"name": "${localWorkspaceFolderBasename}",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"containerEnv": {
 		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
 		"PROJECT_NAME": "${localWorkspaceFolderBasename}",
-    "PROJECT_PATH": "${containerWorkspaceFolder}",
+		"PROJECT_PATH": "${containerWorkspaceFolder}",
 		"ANSIBLE_LOCALHOST_WARNING": "False",
 		"ANSIBLE_INVENTORY_UNPARSED_WARNING": "False"
 	},
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"build": { 
+	"build": {
 		"context": ".",
 		"dockerfile": "Dockerfile",
 		"args": {
@@ -24,57 +21,16 @@
 	},
 	"initializeCommand": "make initialize --ignore-errors -f .devcontainer/Makefile",
 	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile",
-	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}","--env-file",".devcontainer/.env" ],
+	"runArgs": [
+		"--name",
+		"${localWorkspaceFolderBasename}_devcontainer",
+		"--hostname",
+		"${localWorkspaceFolderBasename}",
+		"--env-file",
+		".devcontainer/.env"
+	],
 	"mounts": [
 		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USER}${localEnv:USERNAME},type=volume",
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USER}${localEnv:USERNAME}/.ssh,type=bind,consistency=cached"
-	],
-	//Configure tool-specific properties.
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"jeff-hykin.better-dockerfile-syntax",
-				"ms-azuretools.vscode-docker",
-				"ms-vsliveshare.vsliveshare",
-				"mikestead.dotenv",
-				"EditorConfig.EditorConfig",
-				"redhat.vscode-yaml",
-				"streetsidesoftware.code-spell-checker",
-				"eamodio.gitlens",
-				"ms-vscode.makefile-tools",
-				"esbenp.prettier-vscode",
-				"redhat.ansible",
-				"dhoeric.ansible-vault",
-				"nhoizey.gremlins"
-			],
-			"settings": {
-				"ansible.ansibleLint.enabled": false,
-				"ansible.python.interpreterPath": "/usr/bin/python3",
-				"dev.containers.copyGitConfig": false,
-				"dev.containers.gitCredentialHelperConfigLocation": "system",
-				"editor.tabSize": 2,
-				"files.exclude": {
-					"**/.dotnet": true,
-					"**/.zcompdump": true
-				},
-				"files.readonlyFromPermissions": true,
-				"redhat.telemetry.enabled": false,
-				"terminal.integrated.profiles.linux": {
-					"bash": {
-						"path": "/bin/bash",
-						"icon": "terminal-bash",
-						"args": ["-l"]
-					},
-					"zsh": {
-						"path": "/bin/zsh",
-						"icon": "terminal-linux",
-						"args": ["-l"]
-					}
-				},
-				"terminal.integrated.tabs.description": "",
-				"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
-				"window.title": "${localWorkspaceFolderBasename}"
-			}
-		}
-	}
+	]
 }
