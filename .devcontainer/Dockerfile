@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
-ARG IMAGE_LANG=alpine 
-ARG IMAGE_VERSION=3.19.1
+ARG IMAGE_LANG=fedora 
+ARG IMAGE_VERSION=42
 
 FROM ${IMAGE_LANG}:${IMAGE_VERSION}
 LABEL maintainer="Mike Glenn <mglenn@ilude.com>"
@@ -23,55 +23,45 @@ ENV TERM_SHELL=${TERM_SHELL}
 ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
-RUN apk --no-cache add \
+RUN dnf install -y \
+  awk \
   bash \
   bash-completion \
-  bash-completion-doc \
-  bash-doc \
   binutils \
-  build-base \
+  @development-tools \
   ca-certificates \
   cmake \
   coreutils \
   curl \
-  curl-doc \
-  curl-zsh-completion \
-  exa \
+  direnv \
   extra-cmake-modules \
+# Eza doesn't seem to be currently packaged on Fedora 42. See https://src.fedoraproject.org/rpms/rust-exa/c/56d7e422581af12861b59e95ff75f4514be3b86a?branch=rawhide
+#  eza \
   findutils \
+  fzf \
   git \
   git-crypt \
-  git-crypt-doc \
-  git-doc \
-  github-cli \
-  github-cli-doc \
-  gnupg \
-  helm-bash-completion \
-  helm-zsh-completion \
-  iproute2 \
+  gh \
+  gnupg2 \
+  iproute \
   jq \
   just \
-  just-bash-completion \
-  just-zsh-completion \
   less \
-  less-doc \
-  linux-headers \
+  kernel-headers \
   make \
-  make-doc \
-  mandoc \
-  mandoc-apropos \
+  man-db \
   man-pages \
   nano \
+  neovim \
   nmap \
-  nmap-scripts \
   openssl \
-  openssh-client \
-  py3-pip \
+  openssh-clients \
   python3 \
-  python3-dev \
+  python3-pip \
+  python3-devel \
   ripgrep \
   rsync \
-  shadow \
+  shadow-utils \
   sshpass \
   sudo \
   tar \
@@ -83,12 +73,8 @@ RUN apk --no-cache add \
   yq \
   zsh \
   zsh-autosuggestions \
-  zsh-completions \
-  zsh-doc \
-  zsh-shift-select \
-  zsh-syntax-highlighting \
-  zsh-syntax-highlighting-doc && \
-  rm -rf /var/cache/apk/* && \
+  zsh-syntax-highlighting && \
+  dnf clean all && \
   # https://www.jeffgeerling.com/blog/2023/how-solve-error-externally-managed-environment-when-installing-pip3
   sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED  && \
 	pip3 install tldr dircolors
@@ -117,12 +103,12 @@ RUN \
 # install doppler cli
 RUN curl -LsS --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sh
 
-RUN addgroup -g ${PGID} ${USER} && \
-		adduser -u ${PUID} -G ${USER} -s /bin/${TERM_SHELL} -D ${USER} && \
+RUN groupadd -g ${PGID} ${USER} && \
+    useradd -u ${PUID} -g ${PGID} -s /bin/${TERM_SHELL} -m ${USER} && \
     echo ${USER} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER} && \
     mkdir -p /workspaces/${PROJECT_NAME} && \
-		ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
+		ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
 
 ENV HOME=/home/${USER}
 
