@@ -20,7 +20,7 @@
       loop: "{{ repo_data.repos }}"
 # end block
 
-- name: "Clone {{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') }} Repository"
+- name: "Clone Repository {{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') }}"
   git:
     repo: "{{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') }}"
     dest: "{{ lookup('env', 'PWD') }}/automations/{{ lookup('env', 'ANSIBLE_PLAYBOOKS_URL') | regex_replace('.*/', '') | regex_replace('\\.git$', '') }}"
