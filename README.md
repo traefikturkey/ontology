@@ -1,8 +1,19 @@
-# ontology
+# ontology (Neovim branch)
+
 A .devcontainer based environment for using terraform, ansible, kubectl and helm
 
 # prereqs
+
+## Getting started
+
+Install Devcontainers CLI
+
+`npm install -g @devcontainers/cli`
+
+Change directory into the git repo and then run `devcontainer build --workspace-folder .`
+
 ## windows
+
 ```
 winget install -e --id GnuWin32.Make
 winget install -e --id Docker.DockerDesktop
@@ -12,12 +23,14 @@ code --install-extension ms-vscode-remote.remote-ssh
 ```
 
 ## optional overrides in .devcontainer/.env file
+
 ```
 # a git repo for DotBot dotfiles
 DOTFILES_URL=git@github.com:ilude/dotfiles.git
 ```
 
 ## optionally download playbook or other repos from .devcontainer/.playbook_repos
+
 ```
 # copy this file to .playbook_repos and customize with your playbook repos
 repos:
@@ -28,3 +41,4 @@ repos:
   - url: https://github.com/example/repo3.git
     name: custom_repo3_directory
 ```
+
