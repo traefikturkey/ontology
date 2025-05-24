@@ -1,3 +1,6 @@
 - include_tasks: ssh.yml
 - include_tasks: dotfiles.yml
 - include_tasks: clone_playbook_repos.yml
+- name: Install Starship
+  include_tasks: starship.yml
+  when: starship_enabled | bool

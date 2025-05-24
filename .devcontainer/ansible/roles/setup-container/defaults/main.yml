@@ -1,2 +1,7 @@
 dotfiles_url: "{{ lookup('env', 'DOTFILES_URL') }}"
 dotfiles_path: "{{ lookup('env', 'HOME') + '/.dotfiles' }}"
+starship_enabled: "{{ lookup('env', 'STARSHIP_ENABLED') }}"
+starship_version: "latest"
+starship_url: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-gnu.tar.gz
+starship_download_path: "/tmp/starship.tar.gz"
+starship_installation_directory: "/usr/local/bin"

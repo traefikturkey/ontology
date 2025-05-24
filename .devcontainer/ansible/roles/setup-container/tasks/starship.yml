@@ -1,0 +1,19 @@
+---
+
+- name: "STARSHIP INSTALL - Download starship from Github to /tmp."
+  get_url:
+    url: "{{ starship_url }}"
+    dest: "{{ starship_download_path }}"
+    mode: '0755'
+
+- name: "STARSHIP INSTALL - Extract the tarball."
+  unarchive:
+    src: "{{ starship_download_path }}"
+    dest: "{{ starship_installation_directory }}" 
+    mode: '0755'
+  become: true
+
+- name: "STARSHIP INSTALL - starship delete tarball"
+  file:
+    path: "{{ starship_download_path }}"
+    state: absent
