@@ -67,6 +67,7 @@ RUN dnf install -y \
   tar \
   tree \
   tzdata \
+  tmux \
   util-linux \
   xz \
   yamllint \
