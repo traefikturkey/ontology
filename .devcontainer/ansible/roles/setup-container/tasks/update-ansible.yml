@@ -1,0 +1,33 @@
+- name: Update package cache
+  apk:
+    update_cache: yes
+
+- name: Ensure Python 3 and pip are installed
+  apk:
+    name:
+      - python3
+      - py3-pip
+    state: latest
+
+- name: Upgrade pip
+  pip:
+    name: pip
+    state: latest
+
+- name: Install/Upgrade Ansible
+  pip:
+    name: ansible
+    state: latest
+
+- name: Upgrade all installed Ansible Galaxy collections
+  ansible.builtin.command: ansible-galaxy collection install --upgrade --force-with-deps '*'
+  changed_when: true
+
+- name: Get list of installed collections
+  ansible.builtin.command: ansible-galaxy collection list
+  register: installed_collections
+  changed_when: false
+
+- name: Display installed collections
+  ansible.builtin.debug:
+    var: installed_collections.stdout_lines

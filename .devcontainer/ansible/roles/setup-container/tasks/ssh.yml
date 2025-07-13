@@ -1,4 +1,4 @@
-- name: et permissions on ~/.ssh
+- name: Set permissions on ~/.ssh
   file:
     path: "{{ lookup('env', 'HOME') + '/.ssh' }}"
     state: directory
@@ -8,6 +8,7 @@
     mode: '0700'
 
 - name: Set permissions for ~/.ssh files
+  become: true
   file:
     path: "{{ item }}"
     mode: '0600'

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 ARG IMAGE_LANG=alpine 
-ARG IMAGE_VERSION=3.19.1
+ARG IMAGE_VERSION=3.22.0
 
 FROM ${IMAGE_LANG}:${IMAGE_VERSION}
 LABEL maintainer="Mike Glenn <mglenn@ilude.com>"
@@ -88,14 +88,19 @@ RUN apk --no-cache add \
   zsh-shift-select \
   zsh-syntax-highlighting \
   zsh-syntax-highlighting-doc && \
-  rm -rf /var/cache/apk/* && \
+  rm -rf /var/cache/apk/*
   # https://www.jeffgeerling.com/blog/2023/how-solve-error-externally-managed-environment-when-installing-pip3
-  sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED  && \
-	pip3 install tldr dircolors
+  # sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED && /
+	# pip3 install tldr dircolors
   
 # install ansible
-RUN \
-  pip3 install ansible ansible-lint
+# RUN \
+#   pip3 install ansible ansible-lint
+
+RUN apk --no-cache add \
+  ansible \
+  ansible-lint
+
 
 # install kubectl
 RUN \
