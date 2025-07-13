@@ -6,8 +6,9 @@
     update: yes
     force: yes
     accept_hostkey: yes
-  ignore_errors: yes 
+  ignore_errors: true
 
 - name: Execute {{ dotfiles_path }}/install
   command: "{{ dotfiles_path }}/install"
-  ignore_errors: yes 
+  ignore_errors: true
+  become: false
